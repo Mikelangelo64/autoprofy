@@ -1,0 +1,24 @@
+$colors: (
+    'text-secondary': #FFFFFF,
+    'text-primary': #262729,
+    'bg-primary': #F6F6F6,
+    'button': #FB2740,
+    'button-active': #CF1C31,
+);
+
+
+@function hex-to-rgb ($hex) {
+    @return red($hex), green($hex), blue($hex);
+}
+
+:root {
+    @each $key, $value in $colors {
+        --color-#{$key}--rgb: #{hex-to-rgb($value)};
+        --color-#{$key}: #{$value};
+    }
+}
+
+html {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+}
