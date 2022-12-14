@@ -201,19 +201,27 @@ body{
 }
 
 @mixin form-input {
+    width: 100%;
     border: unset;
     border-bottom: 1px solid var(--color-text-secondary);
-    font-weight: 500;
-    font-size: px-to-rem(14);
-    color: var(--color-text-secondary);
     background-color: transparent;
     padding: unset;
     padding-bottom: 6px;
+
+    transition: border 0.3s ease;
+
+    font-weight: 500;
+    font-size: px-to-rem(14);
+    color: var(--color-text-secondary);
 
     &::placeholder {
         font-weight: 500;
         font-size: px-to-rem(14);
         color: var(--color-text-secondary);
+    }
+
+    @at-root label.incorrect input {
+        border-color: var(--color-button);
     }
 }
 
