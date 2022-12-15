@@ -13,6 +13,13 @@
   box-sizing: border-box;
 }
 
+* {
+    text-size-adjust: 100%;
+    @include viewport-phone {
+      outline: none;
+    }
+}
+
 body,
 input,
 textarea,
@@ -203,6 +210,9 @@ body{
 @mixin form-input {
     width: 100%;
     border: unset;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -webkit-appearance: none;
     border-bottom: 1px solid var(--color-text-secondary);
     background-color: transparent;
     padding: unset;

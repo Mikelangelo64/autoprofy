@@ -184,6 +184,68 @@ $(document).ready(function () {
   });
 });
 
+//FAQ
+const faqBtns = document.querySelectorAll('.faq-list__summary');
+const faqSVG = document.querySelectorAll('.faq-list__mark svg path');
+const faqDetails = document.querySelectorAll('.faq-list__details');
+const animations = [];
+const animationsSVG = [];
+
+const makeTimeline = (item) => {
+  const timelineFaq = gsap.timeline({
+    defaults: { duration: 0.6, ease: 'power4.inOut' },
+  });
+  timelineFaq.to(item, { height: 'auto' }).to(item, { opacity: 1 }, '<0.3');
+
+  return timelineFaq;
+};
+
+const makeTimelineSVG = (item) => {
+  const timelineFaq = gsap.timeline({
+    defaults: { duration: 0.15 },
+  });
+  timelineFaq
+    .to(item, { d: 'path("M8 1.5 L8 8.5 L8 1.5")' })
+    .to(item, { d: 'path("M15 8 L8 1.5 L1 8")' }, '>0.15');
+
+  return timelineFaq;
+};
+
+if (Array.from(faqSVG).length !== 0) {
+  Array.from(faqSVG).forEach((item) => {
+    const itemAnimation = makeTimelineSVG(item);
+    itemAnimation.pause();
+    animationsSVG.push(itemAnimation);
+  });
+}
+
+if (Array.from(faqDetails).length !== 0) {
+  Array.from(faqDetails).forEach((item) => {
+    const itemAnimation = makeTimeline(item);
+    itemAnimation.pause();
+    animations.push(itemAnimation);
+  });
+}
+
+faqBtns.forEach((item, index) => {
+  item.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    const parent = item.parentElement.parentElement;
+    if (!parent) {
+      return;
+    }
+
+    if (Array.from(parent.classList).includes('_active', 0)) {
+      animationsSVG[index].reverse();
+      animations[index].reverse();
+    } else {
+      animationsSVG[index].play();
+      animations[index].play();
+    }
+    parent.classList.toggle('_active');
+  });
+});
+
 //swipers
 let swiperBrands = new Swiper('.brands-swiper.swiper', {
   // autoplay: {

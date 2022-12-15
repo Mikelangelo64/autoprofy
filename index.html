@@ -17,7 +17,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" defer></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js" defer></script>
     <script src="js/script.js" defer></script>
 </head>
 <body>
@@ -1443,6 +1443,146 @@
                             <path d="M8.5 5L15.5 12L8.5 19" stroke="#262729" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq">
+        <div class="_container faq__container">
+            <div class="faq__wrapper">
+
+                <div class="faq__header _section-header">
+                    <div class="faq__title__container _section-header__title__conteiner">
+                        <h2 class="faq__title">
+                            Часті питання
+                        </h2>
+                    </div>
+                </div>
+
+                <ul class="faq-list">
+                    <li class="faq-list__item">
+                        <div class="faq-list__item__container">
+                            <button class="faq-list__summary">
+                                <span class="faq-list__title">
+                                    У чому переваги обслуговування в нашому СТО?
+                                </span>
+                                <span class="faq-list__mark">
+                                    <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 1.5L8 8.5L1 1.5" stroke="#262729" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </button>
+                            <div class="faq-list__details">
+                                <div class="faq-list__description">
+                                    <p>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius reiciendis et ab quas ullam dolorum cumque quaerat repudiandae asperiores distinctio!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="faq-list__item">
+                        <div class="faq-list__item__container">
+                            <button class="faq-list__summary">
+                                <span class="faq-list__title">
+                                    Запчастини надаєте ви або потрібно самостійно купувати?
+                                </span>
+                                <span class="faq-list__mark">
+                                    <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 1.5L8 8.5L1 1.5" stroke="#262729" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </button>
+                            <div class="faq-list__details hui">
+                                <div class="faq-list__description">
+                                    <p>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius reiciendis et ab quas ullam dolorum cumque quaerat repudiandae asperiores distinctio!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="faq-list__item">
+                        <div class="faq-list__item__container">
+                            <button class="faq-list__summary">
+                                <span class="faq-list__title">
+                                    Що входить в діагностику?
+                                </span>
+                                <span class="faq-list__mark">
+                                    <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 1.5L8 8.5L1 1.5" stroke="#262729" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </button>
+                            <div class="faq-list__details">
+                                <div class="faq-list__description">
+                                    <p>
+                                        Виконуємо кваліфікований ремонт VW за лояльними цінами в Дніпропетровську. Працюємо по фіксованому прайсу на послуги. Вартість послуг визначається видом поломки, складністю ремонту і ціною запчастин. Ви можете придбати запчастини у нас або передати майстрові для установки. З питань вартості проконсультуємо по телефону. Точна ціна буде оголошена після огляду автомобіля майстром і установки виду несправності.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="consultation">
+
+        <div class="_container consultation__container">
+
+            <div class="consultation__img">
+                <img src="./assets/img/img-consultation-car.png" alt="car">
+            </div>
+
+            <div class="consultation__wrapper">
+
+                <div class="consultation__header">
+                    <div class="consultation__title__container">
+                        <h2 class="consultation__title">
+                            <span>
+                                Залишились питання? 
+                            </span>
+                            Отримайте безкоштовну консультацію 
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="consultation__form__container">
+                    <form action="post" class="consultation-form">
+                        <div>
+                            <label class="incorrect" for="name">
+                                <span>
+                                    Ваше ім'я
+                                </span>
+                                <input type="text" name="name" id="name">
+                                <strong>
+                                    Невірний формат
+                                </strong>
+                            </label>
+
+                            <label for="telephone">
+                                <span>
+                                    Ваш телефон
+                                </span>
+                                <input type="tel" name="telephone" id="telephone">
+                                <strong>
+                                    Невірний формат
+                                </strong>
+                            </label>
+                        </div>
+
+                        <p>
+                            <button type="submit">
+                                Отримати консультацію
+                            </button>
+                            <span>
+                                Мы не передаем данные третим лицам
+                            </span>
+                        </p>
+                    </form>
                 </div>
             </div>
         </div>
