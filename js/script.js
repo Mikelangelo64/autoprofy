@@ -228,24 +228,28 @@ document.addEventListener('DOMContentLoaded', function () {
   let lastScroll = window.scrollY;
   let ticking = false;
 
-  const wheelRotate = (delta) => {
+  const wheelRotate = (delta, isFirstStep = false) => {
     if (!wheel) {
       return;
     }
     if (isMobile.any()) {
       wheel.style.transform = '';
+      return;
     }
 
-    progress.target += delta;
-    progress.current = lerp(progress.current, progress.target, 0.15, 2);
+    if (isFirstStep) {
+      progress.target += delta;
+    }
+
+    progress.current = lerp(progress.current, progress.target, 0.15, 0.001);
     wheel.style.transform = `rotate(${progress.current}deg)`;
 
     if (progress.current === progress.target) {
       stopAnimation(idAnimation);
+      //}
+    } else {
+      wheelRotate(progress.target);
     }
-    // } else {
-    //     wheelRotate(0)
-    // }
   };
 
   addEventListener('scroll', (evt) => {
@@ -258,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //if(!ticking) {
     idAnimation = window.requestAnimationFrame(() => {
-      wheelRotate((delta / 360) * 50);
+      wheelRotate((delta / 360) * 50, true);
       //ticking = false;
     });
 
@@ -494,16 +498,19 @@ const selectPointerAnimate = (selectPointer, y) => {
   }
 
   selectProgress.target = y;
+  //selectProgress.current = selectProgress.target;
   selectProgress.current = linearLerp(
     selectProgress.current,
     selectProgress.target,
     0.15,
-    7
+    0.001
   );
   selectPointer.style.transform = `translateY(${selectProgress.current}px)`;
 
   if (selectProgress.current === selectProgress.target) {
     cancelAnimationFrame(selectPointerAnimationId);
+  } else {
+    selectPointerAnimate(selectPointer, y);
   }
 };
 

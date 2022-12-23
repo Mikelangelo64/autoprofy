@@ -1379,6 +1379,7 @@ form {
 //LABELED-------------------------------------------------------------------
 .labeled {
     position: relative;
+    z-index: 0;
     // margin-bottom: px-to-rem(40);
     overflow: hidden;
 
@@ -2081,55 +2082,93 @@ form {
         //.services-list__item 
         &__item {
             position: relative;
-            display: flex;
+            display: block;
             width: 100%;
             height: 100%;
-            background-color: var(--color-text-secondary);
-            
-            flex-direction: column;
-            align-items: center;
             overflow: hidden;
-            transition: color 0.3s ease;
 
-            text-align: center;
-            font-weight: 600;
-            font-size: px-to-rem(12);
-            line-height: 129.9%;            
-            color: var(--color-text-primary);
-
-            @include viewport-tablet-min {
-                padding: px-to-rem(37) px-to-rem(18) px-to-rem(21);
+            //.services-list__item__inner 
+            //.services-list__item__hover 
+            &__inner,
+            &__hover {
+                display: flex;
+                width: 100%;
+                height: 100%;
+                
+                flex-direction: column;
+                align-items: center;
+                overflow: hidden;
+                transition: transform 0.3s ease;
+    
+                text-align: center;
+                font-weight: 600;
+                font-size: px-to-rem(12);
+                line-height: 129.9%;            
+    
+                @include viewport-tablet-min {
+                    padding: px-to-rem(37) px-to-rem(18) px-to-rem(21);
+                }
+    
+                @include viewport-phone {
+                    padding: px-to-rem(20) px-to-rem(12) px-to-rem(15);
+                }
             }
 
-            @include viewport-phone {
-                padding: px-to-rem(20) px-to-rem(12) px-to-rem(15);
+            &__inner {
+                background-color: var(--color-text-secondary);
+                color: var(--color-text-primary);
+
+                @at-root .services-list__item:hover & {
+                    transform: translate(0, -100%);
+                } 
+                @at-root .services-list__item:focus-visible & {
+                    transform: translate(0, -100%);
+                }
             }
 
-            &:hover,
-            &:focus-visible {
-                color: var(--color-text-secondary);
-            }
-
-            &::before {
-                content: '';
+            &__hover {
                 position: absolute;
                 top: 100%;
                 left: 0;
                 width: 100%;
-                height: 100%;
                 background-color: var(--color-button);
+                color: var(--color-text-secondary);
 
-                transition: transform 0.3s ease;
-
-                @at-root .services-list__item:hover::before {
-                    transform: translateY(-100%);
-                }
-
-                @at-root .services-list__item:focus-visible::before {
-                    transform: translateY(-100%);
+                @at-root .services-list__item:hover & {
+                    transform: translate(0, -100%);
+                } 
+                @at-root .services-list__item:focus-visible & {
+                    transform: translate(0, -100%);
                 }
             }
+
+            // &:hover,
+            // &:focus-visible {
+            //     color: var(--color-text-secondary);
+            // }
+
+            // &::before {
+            //     content: '';
+            //     position: absolute;
+            //     top: 100%;
+            //     left: 0;
+            //     width: 100%;
+            //     height: 100%;
+            //     background-color: var(--color-button);
+
+            //     transition: transform 0.3s ease;
+
+            //     @at-root .services-list__item:hover::before {
+            //         transform: translateY(-100%);
+            //     }
+
+            //     @at-root .services-list__item:focus-visible::before {
+            //         transform: translateY(-100%);
+            //     }
+            // }
         }
+
+
         
         //.services-list__label 
         &__label {
@@ -3742,7 +3781,7 @@ form {
             }
 
             @at-root .swiper-slide.swiper-slide-active .comments-slider__date {
-                opacity: 1;
+                opacity: 1; 
             }
         }
     }
@@ -3750,9 +3789,10 @@ form {
 
 //BANNER-INNER---------------------------------------------------------------
 .banner-inner {
-    overflow-y: visible;
     overflow-x: clip;
+    overflow-y: visible;
     position: relative;
+    z-index: 1;
     color: var(--color-text-secondary);
 
     @include viewport-desktop {
@@ -3769,7 +3809,7 @@ form {
     }
 
     @include viewport-phone {
-        padding: px-to-rem(92) 0 px-to-rem(20);
+        padding: px-to-rem(92) 0 px-to-rem(68);
     }
 
     //.banner-inner__img 

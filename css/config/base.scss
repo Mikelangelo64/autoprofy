@@ -321,12 +321,12 @@ body{
         }
     }
 
-    .select-items {
+    .select-items { 
         position: absolute;
         top: 100%;
         left: 0;
         width: 100%;
-        z-index: 1;
+        z-index: 3;
         //border-radius: px-to-rem(20);
         background-color: var(--color-text-primary);
         overflow: hidden;
