@@ -3750,7 +3750,8 @@ form {
 
 //BANNER-INNER---------------------------------------------------------------
 .banner-inner {
-    overflow: hidden;
+    overflow-y: visible;
+    overflow-x: clip;
     position: relative;
     color: var(--color-text-secondary);
 
@@ -4605,22 +4606,27 @@ form {
     z-index: 999;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(var(--color-text-primary--rgb), 0.88);
-    opacity: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: var(--color-text-secondary);
 
     display: none;
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(var(--color-text-primary--rgb), 0);
+    opacity: 0;
+    overflow: hidden;
+    color: var(--color-text-secondary);
+
+    transition: background 0.5s ease;
+
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+
 
     &._opened {
-        display: block;
-        opacity: 1;
+        background-color: rgba(var(--color-text-primary--rgb), 0.88);
+        // display: block;
+        // opacity: 1;
     }
     
     &._popup-comment {
@@ -4635,6 +4641,7 @@ form {
         overflow: auto;
         -webkit-overflow-scrolling: touch;
         box-shadow: -12px 7px 39px 3px rgba(var(--color-bg-primary--rgb), 0.03);
+        transform: translate(100%, 0);
 
         &::-webkit-scrollbar {
             display: none;
@@ -4655,6 +4662,10 @@ form {
         @include viewport-phone {
             max-width: 90.347%;
             margin: 0 auto;
+        }
+
+        @at-root .popup._opened & {
+            //transform: translate(0, 0);
         }
     }
     

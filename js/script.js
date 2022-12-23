@@ -350,13 +350,45 @@ faqBtns.forEach((item, index) => {
 });
 
 //popup
+//timelines for popup
+const makeTimelinePopup = (item) => {
+  const popupInner = item.querySelector('.popup__scroll');
+  if (!popupInner) {
+    return;
+  }
+
+  const timelinePopup = gsap.timeline({
+    defaults: { duration: 0.3, ease: 'power4.inOut' },
+  });
+  timelinePopup
+    .to(item, { display: 'block', duration: 0.01 })
+    .to(item, { opacity: 1 })
+    .to(popupInner, { x: 0 });
+
+  return timelinePopup;
+};
+
+const popupAnimations = {};
+const popups = document.querySelectorAll('.popup');
+
+if (Array.from(popups).length !== 0) {
+  Array.from(popups).forEach((popup) => {
+    const timeline = makeTimelinePopup(popup);
+    timeline.pause();
+    popupAnimations[popup.dataset.popupname] = timeline;
+  });
+}
+
 //open popup
 const popupOpenBtns = document.querySelectorAll('.popup-open');
 
 const openPopup = (evt) => {
   const popupClass = evt.target.dataset.popup;
+  const popup = document.querySelector(`.${popupClass}`);
 
-  document.querySelector(`${popupClass}`).classList.add('_opened');
+  popupAnimations[popupClass].play();
+
+  popup.classList.add('_opened');
   document.querySelector('html').classList.add('_lock');
   document.querySelector('body').classList.add('_lock');
 };
@@ -376,6 +408,10 @@ const popupArr = document.querySelectorAll('.popup');
 
 const closePopup = (popup) => {
   popup.classList.remove('_opened');
+  const popupClass = popup.dataset.popupname;
+  //console.dir(popup);
+  popupAnimations[popupClass].reverse();
+
   document.querySelector('html').classList.remove('_lock');
   document.querySelector('body').classList.remove('_lock');
 };
@@ -385,8 +421,7 @@ if (popupCloseBtns) {
     item.addEventListener('click', function (evt) {
       evt.preventDefault();
       evt.stopPropagation();
-      const popup = this.offsetParent.offsetParent;
-
+      const popup = this.parentElement.parentElement.parentElement;
       closePopup(popup);
     });
   });
@@ -642,10 +677,10 @@ let swiperComments = new Swiper('.comments-slider.swiper', {
 });
 
 let swiperGallery = new Swiper('.gallery-slider.swiper', {
-  // autoplay: {
-  //   delay: 4500,
-  //   disableOnInteraction: false,
-  // },
+  autoplay: {
+    delay: 4500,
+    disableOnInteraction: false,
+  },
   navigation: {
     nextEl: '.gallery__slider__container .swiper-button-next',
     prevEl: '.gallery__slider__container .swiper-button-prev',

@@ -4547,7 +4547,8 @@ li.level2.has-submenu._opened::before {
 }
 
 .banner-inner {
-  overflow: hidden;
+  overflow-y: visible;
+  overflow-x: clip;
   position: relative;
   color: var(--color-text-secondary);
 }
@@ -5460,25 +5461,18 @@ li.level2.has-submenu._opened::before {
   z-index: 999;
   top: 0;
   left: 0;
+  display: none;
   width: 100%;
   height: 100%;
-  background-color: rgba(var(--color-text-primary--rgb), 0.88);
+  background-color: rgba(var(--color-text-primary--rgb), 0);
   opacity: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  overflow: hidden;
   color: var(--color-text-secondary);
-  display: none;
+  -webkit-transition: background 0.5s ease;
+  transition: background 0.5s ease;
 }
 .popup._opened {
-  display: block;
-  opacity: 1;
+  background-color: rgba(var(--color-text-primary--rgb), 0.88);
 }
 .popup__scroll {
   width: 100%;
@@ -5488,6 +5482,8 @@ li.level2.has-submenu._opened::before {
   -webkit-overflow-scrolling: touch;
   -webkit-box-shadow: -12px 7px 39px 3px rgba(var(--color-bg-primary--rgb), 0.03);
           box-shadow: -12px 7px 39px 3px rgba(var(--color-bg-primary--rgb), 0.03);
+  -webkit-transform: translate(100%, 0);
+          transform: translate(100%, 0);
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
