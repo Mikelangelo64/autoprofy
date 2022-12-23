@@ -622,7 +622,7 @@ let swiperComments = new Swiper('.comments-slider.swiper', {
     nextEl: '.comments__slider__container .swiper-button-next',
     prevEl: '.comments__slider__container .swiper-button-prev',
   },
-  //autoHeight: true,
+  // autoHeight: true,
   loopedSlides: 5,
   loop: true,
   slidesPerView: 1,
@@ -639,4 +639,32 @@ let swiperComments = new Swiper('.comments-slider.swiper', {
       spaceBetween: 97,
     },
   },
+});
+
+let swiperGallery = new Swiper('.gallery-slider.swiper', {
+  // autoplay: {
+  //   delay: 4500,
+  //   disableOnInteraction: false,
+  // },
+  navigation: {
+    nextEl: '.gallery__slider__container .swiper-button-next',
+    prevEl: '.gallery__slider__container .swiper-button-prev',
+  },
+  //autoHeight: true,
+  loopedSlides: 5,
+  loop: true,
+  slidesPerView: 1,
+  spaceBetween: 24,
+
+  // breakpoints: {
+  //   768: {
+  //     spaceBetween: 24,
+  //   },
+  //   899: {
+  //     spaceBetween: 24,
+  //   },
+  //   1199: {
+  //     spaceBetween: 24,
+  //   },
+  // },
 });

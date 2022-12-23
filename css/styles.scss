@@ -226,7 +226,7 @@ form {
     left: 0;
     width: 100%;
     padding: px-to-rem(28) 0;
-    z-index: 10;
+    z-index: 11;
     //background-color: var(--color-text-primary);
 
     //.header__wrapper 
@@ -2803,16 +2803,16 @@ form {
                     transition: stroke 0.3s ease;
                 }
 
-                @at-root .swiper-button-prev:hover path {
+                @at-root .brands__slider__container .swiper-button-prev:hover path {
                     stroke: var(--color-text-secondary);
                 }
-                @at-root .swiper-button-prev:focus-visible path {
+                @at-root .brands__slider__container .swiper-button-prev:focus-visible path {
                     stroke: var(--color-text-secondary);
                 }
-                @at-root .swiper-button-next:hover path {
+                @at-root .brands__slider__container .swiper-button-next:hover path {
                     stroke: var(--color-text-secondary);
                 }
-                @at-root .swiper-button-next:focus-visible path {
+                @at-root .brands__slider__container .swiper-button-next:focus-visible path {
                     stroke: var(--color-text-secondary);
                 }
             }
@@ -3472,7 +3472,7 @@ form {
         .swiper-button-prev,
         .swiper-button-next {
             position: absolute;
-            top: 50%;
+            top: 45%;
             border: unset;
             padding: unset;
             margin: unset;
@@ -4061,6 +4061,194 @@ form {
 
             @include viewport-phone {
                 margin-top: px-to-rem(25);
+            }
+        }
+    }
+}
+
+//GALLERY--------------------------------------------------------------------
+.gallery {
+    overflow: hidden;
+
+    //.gallery__header 
+    &__header {
+        margin-bottom: px-to-rem(24);
+    }
+    
+    //.gallery__title__container 
+    &__title__container {
+        text-align: center;
+    }
+    
+    //.gallery__title 
+    &__title {
+        @include text-heading-2;
+    }
+    
+    //.gallery__wrapper 
+    &__wrapper {
+        position: relative;
+        // display: flex;
+        // align-items: center;
+        padding: 0 var(--wrap-2);
+    }
+    
+    //.gallery__slider__container 
+    &__slider__container {
+        position: relative;
+        width: 100%;
+
+        @include viewport-phone {
+            @media (max-width: 650px) {
+                width: calc(100% + 2 * var(--wrap-2));
+                margin-left: calc(-1 * var(--wrap-2));
+            }
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            position: absolute;
+            top: 50%;
+            display: flex;
+            width: px-to-rem(40);
+            height: auto;
+
+            align-items: center;
+            justify-content: center;
+
+            border: unset;
+            padding: px-to-rem(38) px-to-rem(8);
+            margin: unset;
+            background-color: var(--color-text-primary);
+
+            overflow: hidden;
+            transition: opacity 0.3s ease;
+
+            &::after {
+                display: none;
+            }
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: var(--color-text-secondary);
+                transition: transform 0.3s ease;
+
+                @at-root .swiper-button-prev::before {
+                    transform: translateX(110%);
+                }
+                @at-root .swiper-button-next::before {
+                    transform: translateX(-110%);
+                }
+                @at-root .swiper-button-prev:hover::before {
+                    transform: translateX(0);
+                }
+                @at-root .swiper-button-prev:focus-visible::before {
+                    transform: translateX(0);
+                }
+                @at-root .swiper-button-next:hover::before {
+                    transform: translateX(0);
+                }
+                @at-root .swiper-button-next:focus-visible::before {
+                    transform: translateX(0);
+                }
+            }
+
+            img,
+            svg {
+                position: relative;
+                width: 100%;
+                height: auto;
+
+                path {
+                    transition: stroke 0.3s ease;
+                }
+
+                @at-root .gallery__slider__container .swiper-button-prev:hover path {
+                    stroke: var(--color-text-primary);
+                }
+                @at-root .gallery__slider__container .swiper-button-prev:focus-visible path {
+                    stroke: var(--color-text-primary);
+                }
+                @at-root .gallery__slider__container .swiper-button-next:hover path {
+                    stroke: var(--color-text-primary);
+                }
+                @at-root .gallery__slider__container .swiper-button-next:focus-visible path {
+                    stroke: var(--color-text-primary);
+                }
+            }
+        }
+
+        .swiper-button-prev {
+            left: 0;
+
+            @include viewport-desktop {
+                transform: translate(calc(-100% + px-to-rem(-24)), -50%);
+            }
+
+            @include viewport-tablet {
+                transform: translate(0%, -50%);
+            }
+
+            @include viewport-phone {
+                display: none;
+            }
+        }
+        .swiper-button-next {
+            right: 0;
+
+            @include viewport-desktop {
+                transform: translate(calc(100% + px-to-rem(24)), -50%);
+            }
+
+            @include viewport-tablet {
+                transform: translate(0%, -50%);
+            }
+
+            @include viewport-phone {
+                display: none;
+            }
+        }
+    }
+    
+    //.gallery-slider 
+    &-slider {
+        overflow: visible;
+
+        &.swiper {
+            .swiper-wrapper {
+            }
+            .swiper-slide {
+                opacity: 0.6;
+                transition: opacity 0.3s ease;
+
+                &.swiper-slide-active {
+                    opacity: 1;
+                }
+            }
+        }
+
+        //.gallery-slider__img 
+        &__img {
+            position: relative;
+            width: 100%;
+
+            //.gallery-slider__img__container 
+            &__container {
+                padding-top: 60.333%;
+            }
+
+            img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
         }
     }
