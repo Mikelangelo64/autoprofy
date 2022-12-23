@@ -1,0 +1,23 @@
+@import './viewport';
+@import './font-size.scss';
+
+:root {
+    --wrap: #{px-to-rem(40)};
+    @include viewport-phone {
+      --wrap: #{px-to-rem(16)};
+    }
+  
+    @include viewport-desktop {
+      --wrap-1: 23.958vw;
+  
+      @media (min-width: 1440px) {
+        --wrap-1: calc((100vw - 750px) / 2);
+      }
+    }
+    @include viewport-tablet {
+      --wrap-1: 5vw;
+    }
+    @include viewport-phone {
+      --wrap-1: 5vw;
+    }
+}

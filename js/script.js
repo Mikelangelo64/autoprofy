@@ -1,4 +1,4 @@
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
   const isMobile = {
     Android: function () {
       return navigator.userAgent.match(/Android/i);
@@ -27,99 +27,171 @@ $(document).ready(function () {
   };
 
   if (isMobile.any()) {
-    $('body').addClass('_touch');
+    document.querySelector('body').classList.add('_touch');
+    document.body.style.setProperty('--mobile', `none`);
   } else {
-    $('body').addClass('_pc');
+    document.querySelector('body').classList.add('_pc');
+    document.body.style.setProperty('--mobile', `block`);
   }
+
+  // console.log(1, document.querySelector('body').classList.contains('_pc'));
 
   //normal vh
   const vh = window.innerHeight * 0.01;
   document.body.style.setProperty('--vh', `${vh}px`);
 
-  //header dropdown menu
-  // if(document.body.clientWidth >= 1200) {
-  //     $('.slimmenu-submenu').slideUp(0)
-  //     $('.slimmenu .has-submenu').hover(function(e){
-  //         $(this).toggleClass('_active-dropdown')
-  //         $(this).children('.slimmenu-submenu').slideToggle(300)
-  //     })
-  // } else {
-
-  // }
-
-  //dropdown cities
-  // $('.custom-options').slideUp(0)
-  // $('.menu .custom-select').hover(function(e){
-  //     $(this).toggleClass('_active-dropdown')
-  //     $(this).children('.custom-options').slideToggle(300)
-  // })
-
   // menu global open
-  $('.menu__burger').click(function (e) {
-    e.preventDefault();
-    $(this).addClass('_opened');
-    $('.btn-menu-fixed').addClass('_hide');
-    $('html').addClass('_lock');
-    $('body').addClass('_lock');
-    $('.cd-panel__header').addClass('_opened');
-    $('.menu').addClass('_opened');
-  });
+  const doWhenMenuOpen = () => {
+    document.querySelector('.cd-panel__header').classList.add('_opened');
+    document.querySelector('.menu').classList.add('_opened');
+    document.querySelector('html').classList.add('_lock');
+    document.querySelector('body').classList.add('_lock');
+  };
 
-  $('.btn-menu-fixed').click(function (e) {
-    e.preventDefault();
-    $(this).addClass('_hide');
-    $('.menu__burger').addClass('_opened');
-    $('html').addClass('_lock');
-    $('body').addClass('_lock');
-    $('.cd-panel__header').addClass('_opened');
-    $('.menu').addClass('_opened');
-  });
+  document
+    .querySelector('.menu__burger')
+    .addEventListener('click', function (e) {
+      e.preventDefault();
+      this.classList.add('_opened');
+      document.querySelector('.btn-menu-fixed').classList.add('_hide');
+      doWhenMenuOpen();
+    });
+
+  document
+    .querySelector('.btn-menu-fixed')
+    .addEventListener('click', function (e) {
+      e.preventDefault();
+      this.classList.add('_hide');
+      document.querySelector('.menu__burger').classList.add('_opened');
+      doWhenMenuOpen();
+    });
 
   // menu global close
-  $('.cd-panel__close').click(function (e) {
-    e.preventDefault();
-    $('.cd-panel__header').removeClass('_opened');
-    $('.menu__burger').removeClass('_opened');
-    $('.menu').removeClass('_opened');
-    $('.btn-menu-fixed').removeClass('_hide');
-    $('html').removeClass('_lock');
-    $('body').removeClass('_lock');
+  const closeAll = (arr) => {
+    if (arr.length !== 0) {
+      Array.from(arr).forEach((item) => {
+        item.classList.remove('_opened');
+      });
+    }
+  };
 
-    $('.custom-select').removeClass('_opened');
-    $('.level1').removeClass('_opened');
-  });
+  const doWhenMenuClose = () => {
+    document.querySelector('.cd-panel__header').classList.remove('_opened');
+    document.querySelector('.menu__burger').classList.remove('_opened');
+    document.querySelector('.menu').classList.remove('_opened');
+    document.querySelector('.btn-menu-fixed').classList.remove('_hide');
+    document.querySelector('.slimmenu-submenu').classList.remove('_lock');
+    document.querySelector('html').classList.remove('_lock');
+    document.querySelector('body').classList.remove('_lock');
 
-  //menu open level 2
-  $('.has-submenu__additional, .custom-select__additional').click(function (e) {
-    e.preventDefault();
-    $(this).parent().addClass('_opened');
-    $('.menu').addClass('_lock');
-  });
+    document.querySelector('.custom-select').classList.remove('_opened');
 
-  //menu close level 2
-  $('.custom-options__back').click(function (e) {
-    e.preventDefault();
-    $(this).parent().parent().removeClass('_opened');
-    $('.menu').removeClass('_lock');
-  });
+    const arrLevel1 = document.querySelectorAll('.level1');
+    const arrLevel2 = document.querySelectorAll('.level2');
+    closeAll(arrLevel1);
+    closeAll(arrLevel2);
+  };
 
-  $('.sub-toggle-back').click(function (e) {
-    e.preventDefault();
-    $(this).parent().parent().parent().removeClass('_opened');
-    $('.menu').removeClass('_lock');
+  document
+    .querySelector('.cd-panel__close')
+    .addEventListener('click', function (e) {
+      e.preventDefault();
+      doWhenMenuClose();
+    });
+
+  //menu level 2,3 open/close
+  const sbmenusLevel = document.querySelectorAll(
+    '.has-submenu, .custom-select'
+  );
+  Array.from(sbmenusLevel).forEach((submenu) => {
+    const submenuOpen =
+      submenu.classList[0] === 'custom-select'
+        ? submenu.querySelector('.custom-select__additional')
+        : submenu.querySelector('.has-submenu__additional');
+
+    const submenuClose =
+      submenu.classList[0] === 'custom-select'
+        ? submenu.querySelector('.custom-options__back')
+        : submenu.querySelector('.sub-toggle-back');
+
+    submenuOpen.addEventListener('click', function (e) {
+      e.preventDefault();
+      submenu.classList.add('_opened');
+      let parent;
+
+      if (Array.from(submenu.classList).includes('level2')) {
+        console.log(1);
+        parent = submenu.parentElement;
+      } else {
+        parent = submenu.parentElement.parentElement;
+      }
+
+      parent.classList.add('_lock');
+      parent.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    });
+
+    submenuClose.addEventListener('click', function (e) {
+      e.preventDefault();
+      submenu.classList.remove('_opened');
+
+      if (Array.from(submenu.classList).includes('level2')) {
+        parent = submenu.parentElement;
+      } else {
+        parent = submenu.parentElement.parentElement;
+      }
+
+      parent.classList.remove('_lock');
+    });
   });
 
   //menu open level 3 in the desktops
-  $('.has-submenu__additional__desk').click(function (e) {
-    if (document.body.clientWidth <= 1199) {
-      return;
-    }
+  const submenuAdditionalDesk = document.querySelectorAll(
+    '.has-submenu__additional__desk'
+  );
 
-    e.preventDefault();
-    $(this).parent().addClass('_opened');
-    //$('.menu').addClass('_lock')
-  });
+  if (submenuAdditionalDesk.length !== 0) {
+    Array.from(submenuAdditionalDesk).forEach((item) => {
+      item.addEventListener('click', function (e) {
+        if (document.body.clientWidth <= 1199) {
+          return;
+        }
 
+        e.preventDefault();
+        this.parentElement.classList.add('_opened');
+        //$('.menu').addClass('_lock')
+      });
+    });
+  }
+
+  //menu anchors
+  const anchors = document.querySelectorAll('header ._anchor');
+  if (anchors.length !== 0) {
+    Array.from(anchors).forEach((anchor) => {
+      anchor.addEventListener('click', (evt) => {
+        evt.preventDefault();
+
+        const sectionClass = evt.target.dataset.anchor;
+        const section = document.querySelector(sectionClass);
+
+        if (!section) {
+          return null;
+        }
+        const paddingTop = parseInt(
+          (section.currentStyle || window.getComputedStyle(section)).paddingTop
+        );
+
+        window.scrollTo({
+          top: section.offsetTop + paddingTop / 2,
+          behavior: 'smooth',
+        });
+      });
+    });
+  }
+
+  //WHEEL ROTATE
   const wheel = document.querySelector('._wheel img');
   //let progress = 0
   let progress = {
@@ -138,7 +210,7 @@ $(document).ready(function () {
 
   let idAnimation = null;
 
-  function stopAnimation() {
+  function stopAnimation(idAnimation) {
     cancelAnimationFrame(idAnimation);
   }
 
@@ -246,6 +318,237 @@ faqBtns.forEach((item, index) => {
   });
 });
 
+//popup
+//open popup
+const popupOpenBtns = document.querySelectorAll('.popup-open');
+
+const openPopup = (evt) => {
+  const popupClass = evt.target.dataset.popup;
+
+  document.querySelector(`${popupClass}`).classList.add('_opened');
+  document.querySelector('html').classList.add('_lock');
+  document.querySelector('body').classList.add('_lock');
+};
+
+if (popupOpenBtns) {
+  Array.from(popupOpenBtns).forEach((item) => {
+    item.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      openPopup(evt);
+    });
+  });
+}
+
+//close popup
+const popupCloseBtns = document.querySelectorAll('.popup__close');
+const popupArr = document.querySelectorAll('.popup');
+
+const closePopup = (popup) => {
+  popup.classList.remove('_opened');
+  document.querySelector('html').classList.remove('_lock');
+  document.querySelector('body').classList.remove('_lock');
+};
+
+if (popupCloseBtns) {
+  Array.from(popupCloseBtns).forEach((item) => {
+    item.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      const popup = this.offsetParent.offsetParent;
+
+      closePopup(popup);
+    });
+  });
+}
+
+if (popupArr) {
+  Array.from(popupArr).forEach((item) => {
+    item.addEventListener('click', function (evt) {
+      if (evt.target === this) {
+        closePopup(this);
+      }
+    });
+  });
+
+  window.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === 27) {
+      const popup = document.querySelector('.popup._opened');
+      if (popup) {
+        closePopup(popup);
+      }
+    }
+  });
+}
+
+//comments hardcode
+const stars = document.querySelectorAll('.ec-rating-stars span');
+
+const makeActiveStars = (arr, activeIndex) => {
+  arr.forEach((item, index) => {
+    if (activeIndex >= index) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+  });
+};
+
+Array.from(stars).forEach((item, index, arr) => {
+  item.addEventListener('click', () => {
+    makeActiveStars(arr, index);
+  });
+});
+
+//custom-form-select
+
+//animationFrame select-pointer
+let selectPointerAnimationId;
+const selectProgress = {
+  current: 0,
+  target: 0,
+};
+
+function linearLerp(current, target, ease, approximationLeft = 0.001) {
+  const val = current * (1 - ease) + target * ease;
+  const diff = Math.abs(target - val);
+  if (diff <= approximationLeft) {
+    return target;
+  }
+  return val;
+}
+
+const selectPointerAnimate = (selectPointer, y) => {
+  if (!selectPointer) {
+    return;
+  }
+  if (Array.from(document.querySelector('body').classList).includes('_touch')) {
+    //console.log('mobile');
+    selectPointer.style.display = 'none';
+    return;
+  }
+
+  selectProgress.target = y;
+  selectProgress.current = linearLerp(
+    selectProgress.current,
+    selectProgress.target,
+    0.15,
+    7
+  );
+  selectPointer.style.transform = `translateY(${selectProgress.current}px)`;
+
+  if (selectProgress.current === selectProgress.target) {
+    cancelAnimationFrame(selectPointerAnimationId);
+  }
+};
+
+const selects = document.querySelectorAll('.custom-form-select');
+const selectsLength = Array.from(selects).length;
+
+Array.from(selects).forEach((select, index, selects) => {
+  const selectOriginal = select.querySelector('select');
+  const selectOriginalLength = selectOriginal.length;
+  //console.log(selectOriginal, selectOriginalLength);
+
+  /* For each element, create a new DIV that will act as the selected item: */
+  const selectedItem = document.createElement('DIV');
+  selectedItem.setAttribute('class', 'select-selected');
+  selectedItem.innerHTML =
+    selectOriginal.options[selectOriginal.selectedIndex].innerHTML;
+  select.appendChild(selectedItem);
+
+  /* For each element, create a new DIV that will contain the option list: */
+  const customOptionList = document.createElement('DIV');
+  customOptionList.setAttribute('class', 'select-items select-hide');
+
+  if (document.body.clientWidth >= 1200) {
+    const selectPointer = document.createElement('span');
+    selectPointer.setAttribute('class', 'select-pointer');
+    customOptionList.appendChild(selectPointer);
+
+    customOptionList.addEventListener('mousemove', (evt) => {
+      const rect = customOptionList.getBoundingClientRect();
+      const startY = rect.top;
+      const pointerCenter = selectPointer.getBoundingClientRect().height / 2;
+      const y = Math.min(
+        Math.max(evt.clientY - startY, pointerCenter),
+        rect.height - pointerCenter
+      );
+
+      const progress = y - pointerCenter;
+      //console.log(y);
+      selectPointerAnimationId = window.requestAnimationFrame(() =>
+        selectPointerAnimate(selectPointer, progress)
+      );
+    });
+  }
+
+  Array.from(selectOriginal).forEach((option, optionsIndex) => {
+    /* For each option in the original select element,
+    create a new DIV that will act as an option item: */
+    const customOption = document.createElement('DIV');
+    customOption.innerHTML = selectOriginal.options[optionsIndex].innerHTML;
+    customOption.addEventListener('click', function (e) {
+      /* When an item is clicked, update the original select box,
+        and the selected item: */
+      const select = this.parentNode.parentNode.querySelector('select');
+      const selectLength = select.length;
+      const customSelectedItem = this.parentNode.previousSibling;
+
+      Array.from(select).forEach(
+        (optionChange, indexOptionChange, selectArr) => {
+          if (selectArr[indexOptionChange].innerHTML === this.innerHTML) {
+            selectArr.selectedIndex = indexOptionChange;
+            customSelectedItem.innerHTML = this.innerHTML;
+
+            const activeOptions =
+              this.parentNode.querySelectorAll('.same-as-selected');
+            Array.from(activeOptions).forEach((activeOption) => {
+              activeOption.removeAttribute('class');
+            });
+
+            this.setAttribute('class', 'same-as-selected');
+          }
+        }
+      );
+
+      customSelectedItem.click();
+    });
+    customOptionList.appendChild(customOption);
+  });
+
+  select.appendChild(customOptionList);
+  selectedItem.addEventListener('click', function (e) {
+    /* When the select box is clicked, close any other select boxes,
+    and open/close the current select box: */
+    e.stopPropagation();
+    closeAllSelect(this);
+    this.nextSibling.classList.toggle('select-hide');
+    this.classList.toggle('select-arrow-active');
+  });
+});
+
+function closeAllSelect(element) {
+  /* A function that will close all select boxes in the document,
+  except the current select box: */
+  const arrNo = [];
+  const selectItems = document.querySelectorAll('.select-items');
+  const selectSelecteds = document.querySelectorAll('.select-selected');
+
+  Array.from(selectSelecteds).forEach((selected, index) => {
+    if (element === selected) {
+      arrNo.push(index);
+    } else {
+      selected.classList.remove('selected-arrow-active');
+    }
+  });
+
+  Array.from(selectItems).forEach((item, index) => {
+    if (arrNo.indexOf(index)) {
+      item.classList.add('select-hide');
+    }
+  });
+}
+
 //swipers
 let swiperBrands = new Swiper('.brands-swiper.swiper', {
   // autoplay: {
@@ -271,6 +574,38 @@ let swiperBrands = new Swiper('.brands-swiper.swiper', {
     1199: {
       slidesPerView: 4,
       spaceBetween: 26,
+    },
+  },
+});
+
+let swiperComments = new Swiper('.comments-slider.swiper', {
+  autoplay: {
+    delay: 4500,
+    disableOnInteraction: false,
+  },
+  pagination: {
+    el: '.comments__pagination__container',
+    clickable: true,
+  },
+  navigation: {
+    nextEl: '.comments__slider__container .swiper-button-next',
+    prevEl: '.comments__slider__container .swiper-button-prev',
+  },
+  //autoHeight: true,
+  loopedSlides: 5,
+  loop: true,
+  slidesPerView: 1,
+  spaceBetween: 97,
+
+  breakpoints: {
+    768: {
+      spaceBetween: 97,
+    },
+    899: {
+      spaceBetween: 97,
+    },
+    1199: {
+      spaceBetween: 97,
     },
   },
 });
