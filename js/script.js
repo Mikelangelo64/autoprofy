@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
+  function isSafari() {
+    return (
+      ~navigator.userAgent.indexOf('Safari') &&
+      navigator.userAgent.indexOf('Chrome') < 0
+    );
+  }
   const isMobile = {
     Android: function () {
       return navigator.userAgent.match(/Android/i);
@@ -126,11 +132,16 @@ document.addEventListener('DOMContentLoaded', function () {
         parent = submenu.parentElement.parentElement;
       }
 
-      parent.classList.add('_lock');
-      parent.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
+      console.log(parent.scrollTop);
+
+      parent.scrollTop = 0;
+      setTimeout(() => {
+        parent.classList.add('_lock');
+      }, 300);
+      // parent.scrollTo({
+      //   top: 0,
+      //   behavior: 'smooth',
+      // });
     });
 
     submenuClose.addEventListener('click', function (e) {
@@ -308,10 +319,30 @@ faqBtns.forEach((item, index) => {
     }
 
     if (Array.from(parent.classList).includes('_active', 0)) {
-      animationsSVG[index].reverse();
+      if (
+        ~navigator.userAgent.indexOf('Safari') &&
+        navigator.userAgent.indexOf('Chrome') < 0
+      ) {
+        const svg = item.querySelector('.faq-list__mark svg');
+        if (svg) {
+          svg.classList.remove('_active');
+        }
+      } else {
+        animationsSVG[index].reverse();
+      }
       animations[index].reverse();
     } else {
-      animationsSVG[index].play();
+      if (
+        ~navigator.userAgent.indexOf('Safari') &&
+        navigator.userAgent.indexOf('Chrome') < 0
+      ) {
+        const svg = item.querySelector('.faq-list__mark svg');
+        if (svg) {
+          svg.classList.add('_active');
+        }
+      } else {
+        animationsSVG[index].play();
+      }
       animations[index].play();
     }
     parent.classList.toggle('_active');

@@ -162,16 +162,18 @@ body._lock, body._lock__pop {
   height: 0.625rem;
   background-image: url(../assets/img/label-arrow-down.svg);
   background-repeat: no-repeat;
-  background-position: center cetner;
+  background-position: center center;
   background-size: contain;
+  -webkit-transform: translate(0, -50%);
+          transform: translate(0, -50%);
   -webkit-transition: -webkit-transform 0.3s ease;
   transition: -webkit-transform 0.3s ease;
   transition: transform 0.3s ease;
   transition: transform 0.3s ease, -webkit-transform 0.3s ease;
 }
 .select-selected.select-arrow-active::before {
-  -webkit-transform: rotate(180deg);
-          transform: rotate(180deg);
+  -webkit-transform: translate(0, -50%) rotate(180deg);
+          transform: translate(0, -50%) rotate(180deg);
 }
 
 .custom-form-select .select-items {
@@ -303,6 +305,7 @@ input[type=search] {
 
 input[type=date] {
   position: relative;
+  height: 1.875rem;
   padding-bottom: 0.3125rem;
 }
 input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-calendar-picker-indicator {
@@ -775,6 +778,9 @@ form .form-group .ec-error::before {
 }
 @media (max-width: 1199px) {
   .btn-menu-fixed {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
     position: fixed;
     bottom: 0.625rem;
     left: 0.625rem;
@@ -1625,6 +1631,9 @@ li.level2.has-submenu._opened::before {
 }
 .slimmenu a {
   color: var(--color-text-secondary);
+}
+.slimmenu-submenu {
+  scroll-behavior: smooth;
 }
 @media (min-width: 1200px) {
   .slimmenu-submenu {
@@ -3733,11 +3742,22 @@ li.level2.has-submenu._opened::before {
 .faq-list__mark img {
   width: 100%;
   height: auto;
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+.faq-list__mark svg._active,
+.faq-list__mark img._active {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
 }
 .faq-list__mark svg path,
 .faq-list__mark img path {
-  -webkit-transition: d 0.15s ease;
-  transition: d 0.15s ease;
+  -webkit-transition: d 0.15s ease, -webkit-transform 0.3s ease;
+  transition: d 0.15s ease, -webkit-transform 0.3s ease;
+  transition: d 0.15s ease, transform 0.3s ease;
+  transition: d 0.15s ease, transform 0.3s ease, -webkit-transform 0.3s ease;
 }
 .faq-list__details {
   opacity: 0;

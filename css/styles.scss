@@ -27,6 +27,7 @@ input[type=search] {
 
 input[type=date] {
     position: relative;
+    height: px-to-rem(30);
     padding-bottom: px-to-rem(5);
     // appearance: none;
     &::-webkit-inner-spin-button,
@@ -310,7 +311,7 @@ form {
         display: none;
     }
     @include viewport-tablet-max {
-        //display: none;
+        display: flex;
         position: fixed;
         bottom: px-to-rem(10);
         left: px-to-rem(10);
@@ -1152,6 +1153,8 @@ form {
 
     //.slimmenu-submenu 
     &-submenu {
+        scroll-behavior: smooth;
+
         @include viewport-desktop {
             position: absolute;
             z-index: 1;
@@ -3020,9 +3023,14 @@ form {
             img {
                 width: 100%;
                 height: auto;
+                transition: transform 0.3s ease;
+
+                &._active {
+                    transform: rotate(180deg);
+                }
 
                 path {
-                    transition: d 0.15s ease;
+                    transition: d 0.15s ease, transform 0.3s ease;
 
                     @at-root .faq-list__item._active path {
                         //d: path("M15 8 L8 1.5 L1 8");

@@ -309,13 +309,14 @@ body{
 
             background-image: url(../assets/img/label-arrow-down.svg);
             background-repeat: no-repeat;
-            background-position: center cetner;
+            background-position: center center;
             background-size: contain;
 
+            transform: translate(0, -50%);
             transition: transform 0.3s ease;
 
             @at-root .select-selected.select-arrow-active::before {
-                transform: rotate(180deg);
+                transform: translate(0, -50%) rotate(180deg);
             }
         }
     }
