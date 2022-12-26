@@ -1662,8 +1662,8 @@ li.level2.has-submenu._opened::before {
             transform: translateX(-1.25rem);
     opacity: 0;
     visibility: hidden;
-    -webkit-transition: opacity 0.3s ease, visibility 0s ease 0.3s;
-    transition: opacity 0.3s ease, visibility 0s ease 0.3s;
+    -webkit-transition: opacity 0.3s ease 0.3s, visibility 0s ease;
+    transition: opacity 0.3s ease 0.3s, visibility 0s ease;
   }
   .has-submenu:hover .slimmenu-submenu._level1 {
     opacity: 1;
@@ -2911,6 +2911,7 @@ li.level2.has-submenu._opened::before {
 .recording__img img {
   width: 100%;
   height: auto;
+  will-change: transform;
 }
 .recording__wrapper {
   background-color: var(--color-text-primary);
@@ -3197,6 +3198,7 @@ li.level2.has-submenu._opened::before {
 .price__img__bg img {
   width: 100%;
   height: auto;
+  will-change: transform;
 }
 .price__wrapper {
   position: relative;

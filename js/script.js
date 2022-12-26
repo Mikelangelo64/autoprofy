@@ -226,7 +226,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   let lastScroll = window.scrollY;
-  let ticking = false;
 
   const wheelRotate = (delta, isFirstStep = false) => {
     if (!wheel) {
@@ -260,453 +259,595 @@ document.addEventListener('DOMContentLoaded', function () {
     const delta = window.scrollY - lastScroll;
     lastScroll = window.scrollY;
 
-    //if(!ticking) {
     idAnimation = window.requestAnimationFrame(() => {
       wheelRotate((delta / 360) * 50, true);
-      //ticking = false;
     });
-
-    //     ticking = true;
-    // }
   });
-});
 
-//FAQ
-const faqBtns = document.querySelectorAll('.faq-list__summary');
-const faqSVG = document.querySelectorAll('.faq-list__mark svg path');
-const faqDetails = document.querySelectorAll('.faq-list__details');
-const animations = [];
-const animationsSVG = [];
+  //recording car move
+  const recordingSection = document.querySelector('.recording');
+  let progressCar = {
+    current: 0,
+    target: 0,
+  };
+  let recordingCar;
+  let idAnimationRecording = null;
 
-const makeTimeline = (item) => {
-  const timelineFaq = gsap.timeline({
-    defaults: { duration: 0.6, ease: 'power4.inOut' },
-  });
-  timelineFaq.to(item, { height: 'auto' }).to(item, { opacity: 1 }, '<0.3');
+  if (recordingSection) {
+    recordingCar = recordingSection.querySelector('.recording__img img');
+  }
 
-  return timelineFaq;
-};
+  const carMove = (target) => {
+    if (!recordingCar || !recordingSection) {
+      return;
+    }
+    if (isMobile.any()) {
+      recordingCar.style.transform = '';
+      return;
+    }
+    progressCar.target = target;
+    progressCar.current = lerp(
+      progressCar.current,
+      progressCar.target,
+      0.15,
+      0.001
+    );
 
-const makeTimelineSVG = (item) => {
-  const timelineFaq = gsap.timeline({
-    defaults: { duration: 0.15 },
-  });
-  timelineFaq
-    .to(item, { d: 'path("M8 1.5 L8 8.5 L8 1.5")' })
-    .to(item, { d: 'path("M15 8 L8 1.5 L1 8")' }, '>0.15');
+    recordingCar.style.transform = `translateX(${
+      25 - progressCar.current * 100 * 0.25
+    }%)`;
 
-  return timelineFaq;
-};
+    if (progressCar.current === progressCar.target) {
+      stopAnimation(idAnimationRecording);
+    } else {
+      carMove(progressCar.target);
+    }
+  };
 
-if (Array.from(faqSVG).length !== 0) {
-  Array.from(faqSVG).forEach((item) => {
-    const itemAnimation = makeTimelineSVG(item);
-    itemAnimation.pause();
-    animationsSVG.push(itemAnimation);
-  });
-}
-
-if (Array.from(faqDetails).length !== 0) {
-  Array.from(faqDetails).forEach((item) => {
-    const itemAnimation = makeTimeline(item);
-    itemAnimation.pause();
-    animations.push(itemAnimation);
-  });
-}
-
-faqBtns.forEach((item, index) => {
-  item.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    const parent = item.parentElement.parentElement;
-    if (!parent) {
+  addEventListener('scroll', (evt) => {
+    if (isMobile.any() || !recordingSection) {
       return;
     }
 
-    if (Array.from(parent.classList).includes('_active', 0)) {
-      if (
-        ~navigator.userAgent.indexOf('Safari') &&
-        navigator.userAgent.indexOf('Chrome') < 0
-      ) {
-        const svg = item.querySelector('.faq-list__mark svg');
-        if (svg) {
-          svg.classList.remove('_active');
-        }
-      } else {
-        animationsSVG[index].reverse();
-      }
-      animations[index].reverse();
-    } else {
-      if (
-        ~navigator.userAgent.indexOf('Safari') &&
-        navigator.userAgent.indexOf('Chrome') < 0
-      ) {
-        const svg = item.querySelector('.faq-list__mark svg');
-        if (svg) {
-          svg.classList.add('_active');
-        }
-      } else {
-        animationsSVG[index].play();
-      }
-      animations[index].play();
-    }
-    parent.classList.toggle('_active');
-  });
-});
+    const rect = recordingSection.getBoundingClientRect();
+    const startY = -1 * (rect.top - window.innerHeight / 2);
+    const y = Math.min(Math.max(startY, 0), rect.height);
 
-//popup
-//timelines for popup
-const makeTimelinePopup = (item) => {
-  const popupInner = item.querySelector('.popup__scroll');
-  if (!popupInner) {
-    return;
+    idAnimationRecording = window.requestAnimationFrame(() => {
+      carMove(y / rect.height);
+    });
+  });
+
+  //price carKey animation
+  const priceSection = document.querySelector('.price');
+  const progressPrice = {
+    currentX: 0,
+    targetX: 0,
+    currentY: 0,
+    targetY: 0,
+  };
+  let priceImg;
+  let idAnimationPrice = null;
+
+  const priceImgMove = (targetX, targetY) => {
+    if (!priceImg || !priceSection) {
+      return;
+    }
+    if (isMobile.any()) {
+      priceImg.style.transform = '';
+      return;
+    }
+    const imgWidth = priceImg.getBoundingClientRect().width;
+    const imgHeight = priceImg.getBoundingClientRect().height;
+
+    progressPrice.targetX = targetX;
+    progressPrice.targetY = targetY;
+
+    progressPrice.currentX = lerp(
+      progressPrice.currentX,
+      progressPrice.targetX,
+      0.15,
+      0.01
+    );
+
+    progressPrice.currentY = lerp(
+      progressPrice.currentY,
+      progressPrice.targetY,
+      0.15,
+      0.01
+    );
+
+    priceImg.style.transform = `translate3d(${-progressPrice.currentX * 10}%, ${
+      -progressPrice.currentY * 10
+    }%, 0)`;
+
+    if (
+      priceImg.currentX === priceImg.targetX &&
+      priceImg.currentY === priceImg.targetY
+    ) {
+      stopAnimation(idAnimationPrice);
+    } else {
+      priceImgMove(progressPrice.targetX, progressPrice.targetY);
+    }
+  };
+
+  if (priceSection) {
+    priceImg = priceSection.querySelector('.price__img__bg img');
+
+    priceSection.addEventListener('mousemove', (evt) => {
+      if (!priceImg || isMobile.any()) {
+        return;
+      }
+      const rect = priceSection.getBoundingClientRect();
+      const startY = rect.top;
+      const startX = rect.left;
+
+      const y =
+        Math.min(Math.max(evt.clientY - startY, 0), rect.height) /
+        (rect.height * 2);
+      const x =
+        Math.min(Math.max(evt.clientX - startX, 0), rect.width) /
+        (rect.width * 2);
+
+      idAnimationPrice = window.requestAnimationFrame(() => {
+        priceImgMove(x, y);
+      });
+    });
   }
 
-  const timelinePopup = gsap.timeline({
-    defaults: { duration: 0.3, ease: 'power4.inOut' },
-  });
-  timelinePopup
-    .to(item, { display: 'block', duration: 0.01 })
-    .to(item, { opacity: 1 })
-    .to(popupInner, { x: 0 });
+  //FAQ
+  const faqBtns = document.querySelectorAll('.faq-list__summary');
+  const faqSVG = document.querySelectorAll('.faq-list__mark svg path');
+  const faqDetails = document.querySelectorAll('.faq-list__details');
+  const animations = [];
+  const animationsSVG = [];
 
-  return timelinePopup;
-};
+  const makeTimeline = (item) => {
+    const timelineFaq = gsap.timeline({
+      defaults: { duration: 0.6, ease: 'power4.inOut' },
+    });
+    timelineFaq.to(item, { height: 'auto' }).to(item, { opacity: 1 }, '<0.3');
 
-const popupAnimations = {};
-const popups = document.querySelectorAll('.popup');
+    return timelineFaq;
+  };
 
-if (Array.from(popups).length !== 0) {
-  Array.from(popups).forEach((popup) => {
-    const timeline = makeTimelinePopup(popup);
-    timeline.pause();
-    popupAnimations[popup.dataset.popupname] = timeline;
-  });
-}
+  const makeTimelineSVG = (item) => {
+    const timelineFaq = gsap.timeline({
+      defaults: { duration: 0.15 },
+    });
+    timelineFaq
+      .to(item, { d: 'path("M8 1.5 L8 8.5 L8 1.5")' })
+      .to(item, { d: 'path("M15 8 L8 1.5 L1 8")' }, '>0.15');
 
-//open popup
-const popupOpenBtns = document.querySelectorAll('.popup-open');
+    return timelineFaq;
+  };
 
-const openPopup = (evt) => {
-  const popupClass = evt.target.dataset.popup;
-  const popup = document.querySelector(`.${popupClass}`);
+  if (Array.from(faqSVG).length !== 0) {
+    Array.from(faqSVG).forEach((item) => {
+      const itemAnimation = makeTimelineSVG(item);
+      itemAnimation.pause();
+      animationsSVG.push(itemAnimation);
+    });
+  }
 
-  popupAnimations[popupClass].play();
+  if (Array.from(faqDetails).length !== 0) {
+    Array.from(faqDetails).forEach((item) => {
+      const itemAnimation = makeTimeline(item);
+      itemAnimation.pause();
+      animations.push(itemAnimation);
+    });
+  }
 
-  popup.classList.add('_opened');
-  document.querySelector('html').classList.add('_lock');
-  document.querySelector('body').classList.add('_lock');
-};
-
-if (popupOpenBtns) {
-  Array.from(popupOpenBtns).forEach((item) => {
+  faqBtns.forEach((item, index) => {
     item.addEventListener('click', (evt) => {
       evt.preventDefault();
-      openPopup(evt);
-    });
-  });
-}
-
-//close popup
-const popupCloseBtns = document.querySelectorAll('.popup__close');
-const popupArr = document.querySelectorAll('.popup');
-
-const closePopup = (popup) => {
-  popup.classList.remove('_opened');
-  const popupClass = popup.dataset.popupname;
-  //console.dir(popup);
-  popupAnimations[popupClass].reverse();
-
-  document.querySelector('html').classList.remove('_lock');
-  document.querySelector('body').classList.remove('_lock');
-};
-
-if (popupCloseBtns) {
-  Array.from(popupCloseBtns).forEach((item) => {
-    item.addEventListener('click', function (evt) {
-      evt.preventDefault();
-      evt.stopPropagation();
-      const popup = this.parentElement.parentElement.parentElement;
-      closePopup(popup);
-    });
-  });
-}
-
-if (popupArr) {
-  Array.from(popupArr).forEach((item) => {
-    item.addEventListener('click', function (evt) {
-      if (evt.target === this) {
-        closePopup(this);
+      const parent = item.parentElement.parentElement;
+      if (!parent) {
+        return;
       }
-    });
-  });
 
-  window.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 27) {
-      const popup = document.querySelector('.popup._opened');
-      if (popup) {
-        closePopup(popup);
-      }
-    }
-  });
-}
-
-//comments hardcode
-const stars = document.querySelectorAll('.ec-rating-stars span');
-
-const makeActiveStars = (arr, activeIndex) => {
-  arr.forEach((item, index) => {
-    if (activeIndex >= index) {
-      item.classList.add('active');
-    } else {
-      item.classList.remove('active');
-    }
-  });
-};
-
-Array.from(stars).forEach((item, index, arr) => {
-  item.addEventListener('click', () => {
-    makeActiveStars(arr, index);
-  });
-});
-
-//custom-form-select
-
-//animationFrame select-pointer
-let selectPointerAnimationId;
-const selectProgress = {
-  current: 0,
-  target: 0,
-};
-
-function linearLerp(current, target, ease, approximationLeft = 0.001) {
-  const val = current * (1 - ease) + target * ease;
-  const diff = Math.abs(target - val);
-  if (diff <= approximationLeft) {
-    return target;
-  }
-  return val;
-}
-
-const selectPointerAnimate = (selectPointer, y) => {
-  if (!selectPointer) {
-    return;
-  }
-  if (Array.from(document.querySelector('body').classList).includes('_touch')) {
-    //console.log('mobile');
-    selectPointer.style.display = 'none';
-    return;
-  }
-
-  selectProgress.target = y;
-  //selectProgress.current = selectProgress.target;
-  selectProgress.current = linearLerp(
-    selectProgress.current,
-    selectProgress.target,
-    0.15,
-    0.001
-  );
-  selectPointer.style.transform = `translateY(${selectProgress.current}px)`;
-
-  if (selectProgress.current === selectProgress.target) {
-    cancelAnimationFrame(selectPointerAnimationId);
-  } else {
-    selectPointerAnimate(selectPointer, y);
-  }
-};
-
-const selects = document.querySelectorAll('.custom-form-select');
-const selectsLength = Array.from(selects).length;
-
-Array.from(selects).forEach((select, index, selects) => {
-  const selectOriginal = select.querySelector('select');
-  const selectOriginalLength = selectOriginal.length;
-  //console.log(selectOriginal, selectOriginalLength);
-
-  /* For each element, create a new DIV that will act as the selected item: */
-  const selectedItem = document.createElement('DIV');
-  selectedItem.setAttribute('class', 'select-selected');
-  selectedItem.innerHTML =
-    selectOriginal.options[selectOriginal.selectedIndex].innerHTML;
-  select.appendChild(selectedItem);
-
-  /* For each element, create a new DIV that will contain the option list: */
-  const customOptionList = document.createElement('DIV');
-  customOptionList.setAttribute('class', 'select-items select-hide');
-
-  if (document.body.clientWidth >= 1200) {
-    const selectPointer = document.createElement('span');
-    selectPointer.setAttribute('class', 'select-pointer');
-    customOptionList.appendChild(selectPointer);
-
-    customOptionList.addEventListener('mousemove', (evt) => {
-      const rect = customOptionList.getBoundingClientRect();
-      const startY = rect.top;
-      const pointerCenter = selectPointer.getBoundingClientRect().height / 2;
-      const y = Math.min(
-        Math.max(evt.clientY - startY, pointerCenter),
-        rect.height - pointerCenter
-      );
-
-      const progress = y - pointerCenter;
-      //console.log(y);
-      selectPointerAnimationId = window.requestAnimationFrame(() =>
-        selectPointerAnimate(selectPointer, progress)
-      );
-    });
-  }
-
-  Array.from(selectOriginal).forEach((option, optionsIndex) => {
-    /* For each option in the original select element,
-    create a new DIV that will act as an option item: */
-    const customOption = document.createElement('DIV');
-    customOption.innerHTML = selectOriginal.options[optionsIndex].innerHTML;
-    customOption.addEventListener('click', function (e) {
-      /* When an item is clicked, update the original select box,
-        and the selected item: */
-      const select = this.parentNode.parentNode.querySelector('select');
-      const selectLength = select.length;
-      const customSelectedItem = this.parentNode.previousSibling;
-
-      Array.from(select).forEach(
-        (optionChange, indexOptionChange, selectArr) => {
-          if (selectArr[indexOptionChange].innerHTML === this.innerHTML) {
-            selectArr.selectedIndex = indexOptionChange;
-            customSelectedItem.innerHTML = this.innerHTML;
-
-            const activeOptions =
-              this.parentNode.querySelectorAll('.same-as-selected');
-            Array.from(activeOptions).forEach((activeOption) => {
-              activeOption.removeAttribute('class');
-            });
-
-            this.setAttribute('class', 'same-as-selected');
+      if (Array.from(parent.classList).includes('_active', 0)) {
+        if (isSafari()) {
+          const svg = item.querySelector('.faq-list__mark svg');
+          if (svg) {
+            svg.classList.remove('_active');
           }
+        } else {
+          animationsSVG[index].reverse();
         }
-      );
-
-      customSelectedItem.click();
+        animations[index].reverse();
+      } else {
+        if (isSafari()) {
+          const svg = item.querySelector('.faq-list__mark svg');
+          if (svg) {
+            svg.classList.add('_active');
+          }
+        } else {
+          animationsSVG[index].play();
+        }
+        animations[index].play();
+      }
+      parent.classList.toggle('_active');
     });
-    customOptionList.appendChild(customOption);
   });
 
-  select.appendChild(customOptionList);
-  selectedItem.addEventListener('click', function (e) {
-    /* When the select box is clicked, close any other select boxes,
-    and open/close the current select box: */
-    e.stopPropagation();
-    closeAllSelect(this);
-    this.nextSibling.classList.toggle('select-hide');
-    this.classList.toggle('select-arrow-active');
+  //popup
+  //timelines for popup
+  const makeTimelinePopup = (item) => {
+    const popupInner = item.querySelector('.popup__scroll');
+    if (!popupInner) {
+      return;
+    }
+
+    const timelinePopup = gsap.timeline({
+      defaults: { duration: 0.3, ease: 'power4.inOut' },
+    });
+    timelinePopup
+      .to(item, { display: 'block', duration: 0.01 })
+      .to(item, { opacity: 1 })
+      .to(popupInner, { x: 0 });
+
+    return timelinePopup;
+  };
+
+  const popupAnimations = {};
+  const popups = document.querySelectorAll('.popup');
+
+  if (Array.from(popups).length !== 0) {
+    Array.from(popups).forEach((popup) => {
+      const timeline = makeTimelinePopup(popup);
+      timeline.pause();
+      popupAnimations[popup.dataset.popupname] = timeline;
+    });
+  }
+
+  //open popup
+  const popupOpenBtns = document.querySelectorAll('.popup-open');
+
+  const openPopup = (evt) => {
+    const popupClass = evt.target.dataset.popup;
+    const popup = document.querySelector(`.${popupClass}`);
+
+    popupAnimations[popupClass].play();
+
+    popup.classList.add('_opened');
+    document.querySelector('html').classList.add('_lock');
+    document.querySelector('body').classList.add('_lock');
+  };
+
+  if (popupOpenBtns) {
+    Array.from(popupOpenBtns).forEach((item) => {
+      item.addEventListener('click', (evt) => {
+        evt.preventDefault();
+        openPopup(evt);
+      });
+    });
+  }
+
+  //close popup
+  const popupCloseBtns = document.querySelectorAll('.popup__close');
+  const popupArr = document.querySelectorAll('.popup');
+
+  const closePopup = (popup) => {
+    popup.classList.remove('_opened');
+    const popupClass = popup.dataset.popupname;
+    //console.dir(popup);
+    popupAnimations[popupClass].reverse();
+
+    document.querySelector('html').classList.remove('_lock');
+    document.querySelector('body').classList.remove('_lock');
+  };
+
+  if (popupCloseBtns) {
+    Array.from(popupCloseBtns).forEach((item) => {
+      item.addEventListener('click', function (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        const popup = this.parentElement.parentElement.parentElement;
+        closePopup(popup);
+      });
+    });
+  }
+
+  if (popupArr) {
+    Array.from(popupArr).forEach((item) => {
+      item.addEventListener('click', function (evt) {
+        if (evt.target === this) {
+          closePopup(this);
+        }
+      });
+    });
+
+    window.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === 27) {
+        const popup = document.querySelector('.popup._opened');
+        if (popup) {
+          closePopup(popup);
+        }
+      }
+    });
+  }
+
+  //consultation car parking animation
+  const consultationSection = document.querySelector('.consultation');
+  let consultationCar = null;
+
+  const makeTimelineParking = (item) => {
+    const timeline = gsap.timeline({
+      repeat: -1,
+      yoyo: true,
+      defaults: { duration: 3, ease: 'power4.inOut' },
+    });
+    timeline.to(item, { x: 20, y: -50, rotation: -10 });
+    timeline.to(item, { x: 20, y: 40, rotation: -35, duration: 4.5 });
+    timeline.to(item, { x: -10, y: -50, rotation: -35 });
+    timeline.to(item, { x: 0, y: 25, rotation: -15 });
+    timeline.to(item, { x: 0, y: 0, rotation: 0 });
+    // timeline.to(item, { y: 50 });
+
+    return timeline;
+  };
+
+  if (consultationSection) {
+    consultationCar = consultationSection.querySelector(
+      '.consultation__img img'
+    );
+
+    if (!isMobile.any()) {
+      const timeline = makeTimelineParking(consultationCar);
+      timeline.play();
+    }
+  }
+
+  //comments hardcode
+  const stars = document.querySelectorAll('.ec-rating-stars span');
+
+  const makeActiveStars = (arr, activeIndex) => {
+    arr.forEach((item, index) => {
+      if (activeIndex >= index) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+  };
+
+  Array.from(stars).forEach((item, index, arr) => {
+    item.addEventListener('click', () => {
+      makeActiveStars(arr, index);
+    });
   });
-});
 
-function closeAllSelect(element) {
-  /* A function that will close all select boxes in the document,
-  except the current select box: */
-  const arrNo = [];
-  const selectItems = document.querySelectorAll('.select-items');
-  const selectSelecteds = document.querySelectorAll('.select-selected');
+  //custom-form-select
 
-  Array.from(selectSelecteds).forEach((selected, index) => {
-    if (element === selected) {
-      arrNo.push(index);
+  //animationFrame select-pointer
+  let selectPointerAnimationId;
+  const selectProgress = {
+    current: 0,
+    target: 0,
+  };
+
+  const selectPointerAnimate = (selectPointer, y) => {
+    if (!selectPointer) {
+      return;
+    }
+    if (isMobile.any()) {
+      //console.log('mobile');
+      selectPointer.style.display = 'none';
+      return;
+    }
+
+    selectProgress.target = y;
+    //selectProgress.current = selectProgress.target;
+    selectProgress.current = lerp(
+      selectProgress.current,
+      selectProgress.target,
+      0.15,
+      0.001
+    );
+    selectPointer.style.transform = `translateY(${selectProgress.current}px)`;
+
+    if (selectProgress.current === selectProgress.target) {
+      cancelAnimationFrame(selectPointerAnimationId);
     } else {
-      selected.classList.remove('selected-arrow-active');
+      selectPointerAnimate(selectPointer, y);
     }
+  };
+
+  const selects = document.querySelectorAll('.custom-form-select');
+  const selectsLength = Array.from(selects).length;
+
+  Array.from(selects).forEach((select, index, selects) => {
+    const selectOriginal = select.querySelector('select');
+    const selectOriginalLength = selectOriginal.length;
+    //console.log(selectOriginal, selectOriginalLength);
+
+    /* For each element, create a new DIV that will act as the selected item: */
+    const selectedItem = document.createElement('DIV');
+    selectedItem.setAttribute('class', 'select-selected');
+    selectedItem.innerHTML =
+      selectOriginal.options[selectOriginal.selectedIndex].innerHTML;
+    select.appendChild(selectedItem);
+
+    /* For each element, create a new DIV that will contain the option list: */
+    const customOptionList = document.createElement('DIV');
+    customOptionList.setAttribute('class', 'select-items select-hide');
+
+    if (document.body.clientWidth >= 1200) {
+      const selectPointer = document.createElement('span');
+      selectPointer.setAttribute('class', 'select-pointer');
+      customOptionList.appendChild(selectPointer);
+
+      customOptionList.addEventListener('mousemove', (evt) => {
+        const rect = customOptionList.getBoundingClientRect();
+        const startY = rect.top;
+        const pointerCenter = selectPointer.getBoundingClientRect().height / 2;
+        const y = Math.min(
+          Math.max(evt.clientY - startY, pointerCenter),
+          rect.height - pointerCenter
+        );
+
+        const progress = y - pointerCenter;
+        //console.log(y);
+        selectPointerAnimationId = window.requestAnimationFrame(() =>
+          selectPointerAnimate(selectPointer, progress)
+        );
+      });
+    }
+
+    Array.from(selectOriginal).forEach((option, optionsIndex) => {
+      /* For each option in the original select element,
+    create a new DIV that will act as an option item: */
+      const customOption = document.createElement('DIV');
+      customOption.innerHTML = selectOriginal.options[optionsIndex].innerHTML;
+      customOption.addEventListener('click', function (e) {
+        /* When an item is clicked, update the original select box,
+        and the selected item: */
+        const select = this.parentNode.parentNode.querySelector('select');
+        const selectLength = select.length;
+        const customSelectedItem = this.parentNode.previousSibling;
+
+        Array.from(select).forEach(
+          (optionChange, indexOptionChange, selectArr) => {
+            if (selectArr[indexOptionChange].innerHTML === this.innerHTML) {
+              selectArr.selectedIndex = indexOptionChange;
+              customSelectedItem.innerHTML = this.innerHTML;
+
+              const activeOptions =
+                this.parentNode.querySelectorAll('.same-as-selected');
+              Array.from(activeOptions).forEach((activeOption) => {
+                activeOption.removeAttribute('class');
+              });
+
+              this.setAttribute('class', 'same-as-selected');
+            }
+          }
+        );
+
+        customSelectedItem.click();
+      });
+      customOptionList.appendChild(customOption);
+    });
+
+    select.appendChild(customOptionList);
+    selectedItem.addEventListener('click', function (e) {
+      /* When the select box is clicked, close any other select boxes,
+    and open/close the current select box: */
+      e.stopPropagation();
+      closeAllSelect(this);
+      this.nextSibling.classList.toggle('select-hide');
+      this.classList.toggle('select-arrow-active');
+    });
   });
 
-  Array.from(selectItems).forEach((item, index) => {
-    if (arrNo.indexOf(index)) {
-      item.classList.add('select-hide');
-    }
+  function closeAllSelect(element) {
+    /* A function that will close all select boxes in the document,
+  except the current select box: */
+    const arrNo = [];
+    const selectItems = document.querySelectorAll('.select-items');
+    const selectSelecteds = document.querySelectorAll('.select-selected');
+
+    Array.from(selectSelecteds).forEach((selected, index) => {
+      if (element === selected) {
+        arrNo.push(index);
+      } else {
+        selected.classList.remove('selected-arrow-active');
+      }
+    });
+
+    Array.from(selectItems).forEach((item, index) => {
+      if (arrNo.indexOf(index)) {
+        item.classList.add('select-hide');
+      }
+    });
+  }
+
+  //swipers
+  let swiperBrands = new Swiper('.brands-swiper.swiper', {
+    // autoplay: {
+    //   delay: 4500,
+    //   disableOnInteraction: false,
+    // },
+    navigation: {
+      nextEl: '.brands__slider__container .swiper-button-next',
+      prevEl: '.brands__slider__container .swiper-button-prev',
+    },
+    slidesPerView: 1,
+    spaceBetween: 10,
+
+    breakpoints: {
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 15,
+      },
+      899: {
+        slidesPerView: 3,
+        spaceBetween: 15,
+      },
+      1199: {
+        slidesPerView: 4,
+        spaceBetween: 26,
+      },
+    },
   });
-}
 
-//swipers
-let swiperBrands = new Swiper('.brands-swiper.swiper', {
-  // autoplay: {
-  //   delay: 4500,
-  //   disableOnInteraction: false,
-  // },
-  navigation: {
-    nextEl: '.brands__slider__container .swiper-button-next',
-    prevEl: '.brands__slider__container .swiper-button-prev',
-  },
-  slidesPerView: 1,
-  spaceBetween: 10,
+  let swiperComments = new Swiper('.comments-slider.swiper', {
+    autoplay: {
+      delay: 4500,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: '.comments__pagination__container',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.comments__slider__container .swiper-button-next',
+      prevEl: '.comments__slider__container .swiper-button-prev',
+    },
+    // autoHeight: true,
+    loopedSlides: 5,
+    loop: true,
+    slidesPerView: 1,
+    spaceBetween: 97,
 
-  breakpoints: {
-    768: {
-      slidesPerView: 2,
-      spaceBetween: 15,
+    breakpoints: {
+      768: {
+        spaceBetween: 97,
+      },
+      899: {
+        spaceBetween: 97,
+      },
+      1199: {
+        spaceBetween: 97,
+      },
     },
-    899: {
-      slidesPerView: 3,
-      spaceBetween: 15,
-    },
-    1199: {
-      slidesPerView: 4,
-      spaceBetween: 26,
-    },
-  },
-});
+  });
 
-let swiperComments = new Swiper('.comments-slider.swiper', {
-  autoplay: {
-    delay: 4500,
-    disableOnInteraction: false,
-  },
-  pagination: {
-    el: '.comments__pagination__container',
-    clickable: true,
-  },
-  navigation: {
-    nextEl: '.comments__slider__container .swiper-button-next',
-    prevEl: '.comments__slider__container .swiper-button-prev',
-  },
-  // autoHeight: true,
-  loopedSlides: 5,
-  loop: true,
-  slidesPerView: 1,
-  spaceBetween: 97,
-
-  breakpoints: {
-    768: {
-      spaceBetween: 97,
+  let swiperGallery = new Swiper('.gallery-slider.swiper', {
+    autoplay: {
+      delay: 4500,
+      disableOnInteraction: false,
     },
-    899: {
-      spaceBetween: 97,
+    navigation: {
+      nextEl: '.gallery__slider__container .swiper-button-next',
+      prevEl: '.gallery__slider__container .swiper-button-prev',
     },
-    1199: {
-      spaceBetween: 97,
-    },
-  },
-});
+    //autoHeight: true,
+    loopedSlides: 5,
+    loop: true,
+    slidesPerView: 1,
+    spaceBetween: 24,
 
-let swiperGallery = new Swiper('.gallery-slider.swiper', {
-  autoplay: {
-    delay: 4500,
-    disableOnInteraction: false,
-  },
-  navigation: {
-    nextEl: '.gallery__slider__container .swiper-button-next',
-    prevEl: '.gallery__slider__container .swiper-button-prev',
-  },
-  //autoHeight: true,
-  loopedSlides: 5,
-  loop: true,
-  slidesPerView: 1,
-  spaceBetween: 24,
-
-  // breakpoints: {
-  //   768: {
-  //     spaceBetween: 24,
-  //   },
-  //   899: {
-  //     spaceBetween: 24,
-  //   },
-  //   1199: {
-  //     spaceBetween: 24,
-  //   },
-  // },
+    // breakpoints: {
+    //   768: {
+    //     spaceBetween: 24,
+    //   },
+    //   899: {
+    //     spaceBetween: 24,
+    //   },
+    //   1199: {
+    //     spaceBetween: 24,
+    //   },
+    // },
+  });
 });

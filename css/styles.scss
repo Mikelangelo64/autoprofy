@@ -1174,7 +1174,7 @@ form {
             
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0s ease 0.3s;
+            transition: opacity 0.3s ease 0.3s, visibility 0s ease;
 
             @at-root .has-submenu:hover .slimmenu-submenu._level1 {
                 opacity: 1;
@@ -2266,6 +2266,7 @@ form {
         img {
             width: 100%;
             height: auto;
+            will-change: transform;
         }
     }
 
@@ -2528,6 +2529,7 @@ form {
         img {
             width: 100%;
             height: auto;
+            will-change: transform;
         }
     }
     
