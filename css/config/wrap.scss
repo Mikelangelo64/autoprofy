@@ -2,26 +2,34 @@
 @import './font-size.scss';
 
 :root {
-    --wrap: #{px-to-rem(40)};
-    @include viewport-phone {
-      --wrap: #{px-to-rem(16)};
-    }
+    // --wrap: #{px-to-rem(40)};
+    // @include viewport-phone {
+    //   --wrap: #{px-to-rem(16)};
+    // }
   
     @include viewport-desktop {
+      --wrap: 10.416vw;
       --wrap-1: 23.958vw;
       --wrap-2: 29.166vw;
+      --wrap-lines: 22.152vw;
   
       @media (min-width: 1440px) {
+        --wrap: calc((100vw - 1140px) / 2);
         --wrap-1: calc((100vw - 750px) / 2);
         --wrap-2: calc((100vw - 600px) / 2);
+        --wrap-lines: calc((100vw - 811px) / 2);
       }
     }
     @include viewport-tablet {
+      --wrap: 5vw;
       --wrap-1: 5vw;
       --wrap-2: 5vw;
+      --wrap-lines: 2.5vw;
     }
     @include viewport-phone {
+      --wrap: 5vw;
       --wrap-1: 5vw;
       --wrap-2: 5vw;
+      --wrap-lines: 2.5vw;
     }
 }

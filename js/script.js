@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
       navigator.userAgent.indexOf('Chrome') < 0
     );
   }
+
   const isMobile = {
     Android: function () {
       return navigator.userAgent.match(/Android/i);
@@ -40,7 +41,53 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.style.setProperty('--mobile', `block`);
   }
 
-  // console.log(1, document.querySelector('body').classList.contains('_pc'));
+  //lines bg move
+
+  const makeTimelineLines = (item, height) => {
+    const timeline = gsap.timeline({ repeat: -1, defaults: { ease: 'none' } });
+
+    timeline
+      .from(item, {
+        x: '-50%',
+        y: -20,
+      })
+      .to(item, {
+        x: '-50%',
+        y: height + 20,
+        duration: 5 + Math.random() * 6,
+      });
+
+    return timeline;
+  };
+
+  const linesArr = document.querySelectorAll('.lines');
+
+  if (linesArr.length !== 0) {
+    linesArr.forEach((linesNode) => {
+      const height = linesNode.getBoundingClientRect().height;
+
+      //for each lines element
+      const lines = linesNode.querySelectorAll('.lines-line');
+      if (linesArr.length !== 0) {
+        lines.forEach((line) => {
+          //for each line in every lines
+          const item = line.querySelector('.lines-line__item');
+
+          if (!item) {
+            return;
+          }
+
+          // item.style.transform = `translate3d(-50%, ${Math.floor(
+          //   Math.random() * (height + 1) + 0
+          // )}px, 0)`;
+          item.style.opacity = '1';
+
+          const timeline = makeTimelineLines(item, height);
+          timeline.play(5 + Math.random() * 6);
+        });
+      }
+    });
+  }
 
   //normal vh
   const vh = window.innerHeight * 0.01;
@@ -764,10 +811,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   //swipers
   let swiperBrands = new Swiper('.brands-swiper.swiper', {
-    // autoplay: {
-    //   delay: 4500,
-    //   disableOnInteraction: false,
-    // },
+    autoplay: {
+      delay: 4500,
+      disableOnInteraction: false,
+    },
+    loopedSlides: 5,
+    loop: true,
     navigation: {
       nextEl: '.brands__slider__container .swiper-button-next',
       prevEl: '.brands__slider__container .swiper-button-prev',

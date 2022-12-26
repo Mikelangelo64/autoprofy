@@ -1332,6 +1332,8 @@ form {
 
     //.banner__wrapper 
     &__wrapper {
+        position: relative;
+
         @include viewport-desktop {
             max-width: 44.824%;
         }
@@ -2236,6 +2238,16 @@ form {
         // }
     }
 
+    //.recording__lines__container 
+    &__lines__container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
     //.recording__img 
     &__img {
         position: absolute;
@@ -3123,6 +3135,16 @@ form {
         background-size: cover;
         background-position: center center;
     }
+
+    //.consultation__lines__container 
+    &__lines__container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
     
     //.consultation__img 
     &__img {
@@ -3416,6 +3438,7 @@ form {
 
 //COMMENTS------------------------------------------------------------------
 .comments {
+    position: relative;
     background-color: var(--color-text-primary);
     overflow: hidden;
     color: var(--color-text-secondary);
