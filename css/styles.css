@@ -244,6 +244,7 @@ body._lock, body._lock__pop {
   top: 0;
   left: 0;
   z-index: 0;
+  pointer-events: none;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1263,6 +1264,7 @@ form .form-group .ec-error::before {
   .custom-select {
     -webkit-transform: translateY(0.3125rem);
             transform: translateY(0.3125rem);
+    padding: 0.625rem 0;
   }
 }
 @media (max-width: 1199px) {
@@ -1392,7 +1394,7 @@ form .form-group .ec-error::before {
     display: -ms-grid;
     display: grid;
     border-radius: 1.875rem;
-    padding: 0.625rem;
+    padding: 1.5625rem;
     -ms-grid-columns: 1fr 1.25rem 1fr 1.25rem 1fr;
     grid-template-columns: repeat(3, 1fr);
     row-gap: 1.25rem;
@@ -1403,16 +1405,20 @@ form .form-group .ec-error::before {
             transform: translateX(-0.625rem);
     opacity: 0;
     visibility: hidden;
-    -webkit-transition: opacity 0.3s ease;
-    transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease, visibility 0s 0.3s;
+    transition: opacity 0.3s ease, visibility 0s 0.3s;
   }
   .custom-select:hover .custom-options {
     opacity: 1;
     visibility: visible;
+    -webkit-transition: opacity 0.3s ease 0.3s, visibility 0s;
+    transition: opacity 0.3s ease 0.3s, visibility 0s;
   }
   .custom-select:focus-visible .custom-options {
     opacity: 1;
     visibility: visible;
+    -webkit-transition: opacity 0.3s ease 0.3s, visibility 0s;
+    transition: opacity 0.3s ease 0.3s, visibility 0s;
   }
 }
 @media (max-width: 1199px) {
@@ -1546,7 +1552,7 @@ form .form-group .ec-error::before {
   .slimmenu li.level1 > a {
     position: relative;
     display: block;
-    padding: 0.625rem 0;
+    padding: 1.25rem 0 1.25rem;
   }
   .slimmenu li.level1 > a.has-submenu__additional {
     display: none;
@@ -1555,7 +1561,7 @@ form .form-group .ec-error::before {
     content: "";
     position: absolute;
     left: 0;
-    top: 75%;
+    top: 70%;
     width: 100%;
     height: 1px;
     background-color: var(--color-text-secondary);
@@ -1592,7 +1598,7 @@ form .form-group .ec-error::before {
 .slimmenu li.level1.has-submenu::before {
   content: "";
   position: absolute;
-  top: 38%;
+  top: 42%;
   right: 0;
   width: 0.625rem;
   height: 0.625rem;
@@ -1707,7 +1713,7 @@ li.level2.has-submenu._opened::before {
     width: 100%;
     min-width: 50rem;
     border-radius: 1.875rem;
-    padding: 0.625rem 1.25rem;
+    padding: 1.875rem 2.5rem;
     background-color: var(--color-bg-primary);
     -ms-grid-columns: 1fr 1.25rem 1fr 1.25rem 1fr;
     grid-template-columns: repeat(3, 1fr);
@@ -1719,16 +1725,20 @@ li.level2.has-submenu._opened::before {
             transform: translateX(-1.25rem);
     opacity: 0;
     visibility: hidden;
-    -webkit-transition: opacity 0.3s ease 0.3s, visibility 0s ease;
-    transition: opacity 0.3s ease 0.3s, visibility 0s ease;
+    -webkit-transition: opacity 0.3s ease, visibility 0s ease 0.3s;
+    transition: opacity 0.3s ease, visibility 0s ease 0.3s;
   }
   .has-submenu:hover .slimmenu-submenu._level1 {
     opacity: 1;
     visibility: visible;
+    -webkit-transition: opacity 0.3s ease 0.3s, visibility 0s ease;
+    transition: opacity 0.3s ease 0.3s, visibility 0s ease;
   }
   .has-submenu:focus-visible .slimmenu-submenu._level1 {
     opacity: 1;
     visibility: visible;
+    -webkit-transition: opacity 0.3s ease 0.3s, visibility 0s ease;
+    transition: opacity 0.3s ease 0.3s, visibility 0s ease;
   }
 }
 @media (max-width: 1199px) {

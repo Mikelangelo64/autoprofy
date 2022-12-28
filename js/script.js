@@ -173,13 +173,13 @@ document.addEventListener('DOMContentLoaded', function () {
       let parent;
 
       if (Array.from(submenu.classList).includes('level2')) {
-        console.log(1);
+        //console.log(1);
         parent = submenu.parentElement;
       } else {
         parent = submenu.parentElement.parentElement;
       }
 
-      console.log(parent.scrollTop);
+      //console.log(parent.scrollTop);
 
       parent.scrollTop = 0;
       setTimeout(() => {
@@ -364,6 +364,64 @@ document.addEventListener('DOMContentLoaded', function () {
       carMove(y / rect.height);
     });
   });
+
+  //with-image sections parallax
+  const withImageSections = document.querySelectorAll('.with-image');
+  const startProgress = {
+    current: 0,
+    target: 0,
+  };
+  const progresses = [];
+  let idImageAnimations = [];
+
+  const withImageAnimate = (target, image, content, index) => {
+    if (!image || !content) {
+      return;
+    }
+    if (isMobile.any()) {
+      image.style.transform = '';
+      content.style.transform = '';
+    }
+
+    progresses[index].target = target;
+    progresses[index].current = lerp(
+      progresses[index].current,
+      progresses[index].target,
+      0.15,
+      0.001
+    );
+
+    //console.log(progresses[0].current * 100);
+    image.style.transform = `translateY(${-progresses[index].current * 10}%)`;
+    // content.style.transform = `translateY(${-progresses[index].current}px)`;
+
+    if (progresses[index].current === progresses[index].target) {
+      stopAnimation(idImageAnimations[index]);
+    } else {
+      withImageAnimate(progresses[index].target, image, content, index);
+    }
+  };
+
+  if (withImageSections && !isMobile.any()) {
+    Array.from(withImageSections).forEach((section, index) => {
+      progresses.push(startProgress);
+
+      const image = section.querySelector('.with-image__img');
+      const content = section.querySelector('.with-image__main');
+
+      this.addEventListener('scroll', (evt) => {
+        const rect = section.getBoundingClientRect();
+        const startY = -1 * (rect.top - window.innerHeight / 2);
+        const y = Math.min(Math.max(startY, 0), rect.height);
+
+        const idAnimation = window.requestAnimationFrame(() => {
+          withImageAnimate(y / rect.height, image, content, index);
+        });
+
+        idImageAnimations.push(idAnimation);
+      });
+    });
+  }
 
   //price carKey animation
   const priceSection = document.querySelector('.price');

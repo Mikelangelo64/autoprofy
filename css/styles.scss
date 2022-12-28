@@ -731,6 +731,7 @@ form {
 
     @include viewport-desktop {
         transform: translateY(px-to-rem(5));
+        padding: px-to-rem(10) 0;
     }
 
     @include viewport-tablet-max {
@@ -853,7 +854,7 @@ form {
             display: grid; 
 
             border-radius: px-to-rem(30);
-            padding: px-to-rem(10);
+            padding: px-to-rem(25);
 
             grid-template-columns: repeat(3, 1fr);
             row-gap: px-to-rem(20);
@@ -862,16 +863,18 @@ form {
             transform: translateX(px-to-rem(-10));
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease;
-
+            transition: opacity 0.3s ease, visibility 0s 0.3s;
+            
             @at-root .custom-select:hover .custom-options {
                 opacity: 1;
                 visibility: visible;
+                transition: opacity 0.3s ease 0.3s, visibility 0s;
             }
             
             @at-root .custom-select:focus-visible .custom-options {
                 opacity: 1;
                 visibility: visible;
+                transition: opacity 0.3s ease 0.3s, visibility 0s;
             }
         }
 
@@ -997,7 +1000,7 @@ form {
                 @include viewport-desktop {
                     position: relative;
                     display: block;
-                    padding: px-to-rem(10) 0;
+                    padding: px-to-rem(20) 0 px-to-rem(20);
 
                     &.has-submenu__additional {
                         display: none;
@@ -1007,7 +1010,7 @@ form {
                         content: '';
                         position: absolute;
                         left: 0;
-                        top: 75%;
+                        top: 70%;
                         width: 100%;
                         height: 1px;
                         background-color: var(--color-text-secondary);
@@ -1047,7 +1050,7 @@ form {
                 &::before {
                     content: '';
                     position: absolute;
-                    top: 38%;
+                    top: 42%;
                     right: 0;
                     width: px-to-rem(10);
                     height: px-to-rem(10);
@@ -1164,7 +1167,7 @@ form {
             width: 100%;
             min-width: px-to-rem(800);
             border-radius: px-to-rem(30);
-            padding: px-to-rem(10) px-to-rem(20);
+            padding: px-to-rem(30) px-to-rem(40);
             background-color: var(--color-bg-primary);
 
             grid-template-columns: repeat(3, 1fr);
@@ -1174,16 +1177,18 @@ form {
             
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease 0.3s, visibility 0s ease;
-
+            transition: opacity 0.3s ease, visibility 0s ease 0.3s;
+            
             @at-root .has-submenu:hover .slimmenu-submenu._level1 {
                 opacity: 1;
                 visibility: visible;
+                transition: opacity 0.3s ease 0.3s, visibility 0s ease;
             }
-
+            
             @at-root .has-submenu:focus-visible .slimmenu-submenu._level1 {
                 opacity: 1;
                 visibility: visible;
+                transition: opacity 0.3s ease 0.3s, visibility 0s ease;
             }
         }
 
