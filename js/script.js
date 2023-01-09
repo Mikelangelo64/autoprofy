@@ -299,7 +299,24 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   addEventListener('scroll', (evt) => {
-    if (isMobile.any()) {
+    if (isMobile.any() || !wheel) {
+      return;
+    }
+
+    const wheelSection = wheel.parentElement.parentElement;
+    const wheelSectionRect = wheelSection.getBoundingClientRect();
+    const wheelSectionHeight = wheelSectionRect.height;
+
+    const y = Math.min(
+      Math.max(
+        (-wheelSectionRect.top + window.innerHeight / 2) /
+          (wheelSectionHeight * 1.2),
+        0
+      ),
+      1
+    );
+
+    if (y === 0 || y === 1) {
       return;
     }
 
@@ -700,7 +717,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!isMobile.any()) {
       const timeline = makeTimelineParking(consultationCar);
-      timeline.play();
+
+      window.addEventListener('scroll', () => {
+        const sectionRect = consultationSection.getBoundingClientRect();
+        const sectionHeight = sectionRect.height;
+
+        let isAnimationPlay = false;
+
+        const y = Math.min(
+          Math.max(
+            (-sectionRect.top + window.innerHeight / 2) / (sectionHeight * 1.2),
+            0
+          ),
+          1
+        );
+
+        if (y > 0 && y < 1 && !isAnimationPlay) {
+          timeline.play();
+          isAnimationPlay = true;
+          return;
+        }
+
+        timeline.pause();
+        isAnimationPlay = false;
+      });
     }
   }
 
