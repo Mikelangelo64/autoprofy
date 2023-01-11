@@ -426,6 +426,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const image = section.querySelector('.with-image__img');
       const content = section.querySelector('.with-image__main');
 
+      if (image.classList.contains('_static')) {
+        return;
+      }
+
       this.addEventListener('scroll', (evt) => {
         const rect = section.getBoundingClientRect();
         const startY = -1 * (rect.top - window.innerHeight / 2);
