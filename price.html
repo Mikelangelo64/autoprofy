@@ -21,7 +21,7 @@
     <script src="js/script.js" defer></script>
 </head>
 <body>
-    <header class="header">
+    <header class="header _dark">
         <div class="_container">
             <div class="header__wrapper">
 
@@ -823,9 +823,7 @@
         </div>
     </header>
 
-    
-
-    <section class="price">
+    <section class="price _price-section">
         <div class="_container price__container">
             <div class="price__img__bg">
                 <img src="./assets/img/img-price.png" alt="price-bg" aria-hidden="true">
@@ -834,6 +832,27 @@
             <div class="price__wrapper">
 
                 <div class="price__header _section-header">
+                    <div class="breadcrumb-wrap _dark price__breadcrumbs">
+                        <ul class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                            <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                                <a href="/" itemprop="item">
+                                    <span itemprop="name">
+                                        Головна
+                                    </span>
+                                    <i class="ti-angle-right"></i>
+                                    <meta itemprop="position" content="1">
+                                </a>
+                            </li>
+                            <li class="active" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                                <span itemprop="name">
+                                    Ціни
+                                </span>
+                                <div itemprop="item" content="https://auto-profy.com.ua/price/"></div>
+                                <meta itemprop="position" content="2">
+                            </li>
+                        </ul>
+                    </div>
+
                     <div class="price__title__container _section-header__title__conteiner">
                         <h2 class="price__title">
                             Ціни в СТО Auto-Profy на ремонт та обслуговування авто
@@ -842,7 +861,7 @@
                 </div>
 
                 <div class="price__content">
-                    <div class="price__main">
+                    <!-- <div class="price__main">
                         <div class="price__description">
                             <p>
                                 Виконуємо кваліфікований ремонт VW за лояльними цінами в Дніпропетровську. Працюємо по фіксованому прайсу на послуги. Вартість послуг визначається видом поломки, складністю ремонту і ціною запчастин. Ви можете придбати запчастини у нас або передати майстрові для установки. З питань вартості проконсультуємо по телефону. Точна ціна буде оголошена після огляду автомобіля майстром і установки виду несправності.
@@ -854,9 +873,9 @@
                                 Записатися
                             </a>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="price__list__container">
-                        <div class="price-list">
+                        <div class="price-list" data-line-effect="200">
                             <div class="price-list__row _header">
                                 <div class="price-list__column">
                                     <p>
@@ -880,6 +899,21 @@
                                         від 4200
                                     </p>
                                 </div>
+
+                                <!-- <div class="hover-table">
+                                    <div class="hover-table__content">
+                                        <div class="price-list__column">
+                                            <p>
+                                                Заміна комплекту ланцюга ГРМ
+                                            </p>
+                                        </div>
+                                        <div class="price-list__column">
+                                            <p>
+                                                від 4200
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div> -->
                             </div>
                             <div class="price-list__row">
                                 <div class="price-list__column">
@@ -967,7 +1001,7 @@
                             </div>
                         </div>
 
-                        <div class="price__btn__container _mob">
+                        <div class="price__btn__container ">
                             <a href="#" class="price__btn _btn">
                                 Записатися
                             </a>

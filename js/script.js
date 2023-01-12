@@ -911,6 +911,92 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  //make table hover effect
+  const tableWrappers = document.querySelectorAll('[data-line-effect]');
+  let isTableEffectFinished = true;
+  tableWrappers.length && !isMobile.any() ? tableEffect() : null;
+
+  function tableEffect() {
+    tableWrappers.forEach((tableWrapper) => {
+      const tableRows = tableWrapper.querySelectorAll(
+        '.price-list__row:not(._header)'
+      );
+
+      const effectSpeed = tableWrapper.dataset.lineEffect
+        ? tableWrapper.dataset.lineEffect
+        : 200;
+
+      tableRows.length ? tableEffectItem(tableRows, effectSpeed) : null;
+    });
+
+    function tableEffectItem(tableRows, effectSpeed) {
+      const effectTransition = `transition: transform ${effectSpeed}ms ease;`;
+      const effectHover = `transform: translate3d(0px, 0%, 0px);`;
+      const effectTop = `transform: translate3d(0px, -105%, 0px);`;
+      const effectBottom = `transform: translate3d(0px, 105%, 0px);`;
+
+      tableRows.forEach((tableRow) => {
+        const innerContent = tableRow.innerHTML;
+        tableRow.insertAdjacentHTML(
+          'beforeend',
+          `
+        <div style="transform: translate3d(0px, 105%, 0px);" class="hover-table">
+            <div style="transform: translate3d(0px, -105%, 0px);" class="hover-table__content">
+                ${innerContent}
+            </div>
+        </div>
+        `
+        );
+
+        tableRow.onmouseenter = tableRow.onmouseleave = tableRowActions;
+      });
+
+      function tableRowActions(e) {
+        const tableRow = e.target;
+        const tableRowItem = tableRow.querySelector('.hover-table');
+        const tableRowContent = tableRow.querySelector('.hover-table__content');
+
+        const tableRowHeight = tableRow.offsetHeight / 2;
+        const tableRowPos =
+          e.pageY - (tableRow.getBoundingClientRect().top + scrollY);
+
+        if (!isTableEffectFinished) {
+          return;
+        }
+
+        if (e.type === 'mouseenter') {
+          isTableEffectFinished = false;
+          tableRowItem.style.cssText =
+            tableRowPos > tableRowHeight ? effectBottom : effectTop;
+          tableRowContent.style.cssText =
+            tableRowPos > tableRowHeight ? effectTop : effectBottom;
+
+          setTimeout(() => {
+            isTableEffectFinished = true;
+
+            tableRowItem.style.cssText = effectHover + effectTransition;
+            tableRowContent.style.cssText = effectHover + effectTransition;
+          }, 5);
+        }
+
+        if (e.type === 'mouseleave') {
+          setTimeout(() => {
+            isTableEffectFinished = true;
+
+            tableRowItem.style.cssText =
+              tableRowPos > tableRowHeight
+                ? effectBottom + effectTransition
+                : effectTop + effectTransition;
+            tableRowContent.style.cssText =
+              tableRowPos > tableRowHeight
+                ? effectTop + effectTransition
+                : effectBottom + effectTransition;
+          }, 2.5);
+        }
+      }
+    }
+  }
+
   //swipers
   let swiperBrands = new Swiper('.brands-swiper.swiper', {
     autoplay: {
