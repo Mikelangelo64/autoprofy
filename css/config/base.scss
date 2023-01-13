@@ -408,6 +408,10 @@ body{
         min-height: px-to-rem(560);
     }
 
+    @at-root .blog .blog__bg & {
+        z-index: 1;
+    }
+
     @at-root .banner-inner & {
         z-index: 1;
     }

@@ -2324,6 +2324,23 @@ form {
         margin-bottom: px-to-rem(60);
     }
 
+    &._services-section {
+        @include viewport-desktop {
+            //padding: px-to-rem(143) 0 px-to-rem(122);
+            margin-top: px-to-rem(143);
+        }
+    
+        @include viewport-tablet {
+            //padding: px-to-rem(114) 0 px-to-rem(72);
+            margin-top: px-to-rem(114);
+        }
+    
+        @include viewport-phone {
+            //padding: px-to-rem(92) 0 px-to-rem(68);
+            margin-top: px-to-rem(108);
+        }
+    }
+
     &.labeled {
         margin-bottom: 0;
     }
@@ -2336,6 +2353,11 @@ form {
     &__header {
         margin-bottom: px-to-rem(30);
         text-align: center;
+    }
+
+    //.services__breadcrumbs 
+    &__breadcrumbs {
+        margin-bottom: px-to-rem(30);
     }
     
     //.services__title__container 
@@ -2809,7 +2831,8 @@ form {
     
         @include viewport-phone {
             //padding: px-to-rem(92) 0 px-to-rem(68);
-            margin-top: px-to-rem(92);
+            padding: 0;
+            margin-top: px-to-rem(108);
         }
     }
 
@@ -5455,12 +5478,17 @@ form {
         height: 100vh;
         
         @include viewport-desktop {
-            height: calc(var(--vh, 1vh) * 100);
+            height: calc(var(--vh, 1vh) * 65);
             min-height: px-to-rem(600);
         }
         
-        @include viewport-tablet-max {
-            height: calc(var(--vh, 1vh) * 80);
+        @include viewport-tablet {
+            height: calc(var(--vh, 1vh) * 70);
+            min-height: px-to-rem(560);
+        }
+        
+        @include viewport-phone {
+            height: calc(var(--vh, 1vh) * 72);
             min-height: px-to-rem(560);
         }
     }
@@ -5835,7 +5863,7 @@ form {
 
     @include viewport-phone {
         //padding: px-to-rem(92) 0 px-to-rem(68);
-        padding-top: px-to-rem(92);
+        padding-top: px-to-rem(108);
     }
 
     //.article__container 
