@@ -2012,6 +2012,10 @@ form {
         @include viewport-phone {
             margin-bottom: px-to-rem(30);
         }
+
+        @at-root .contacts-section.labeled & {
+            max-width: unset;
+        }
     }
 
     //.with-image__body 
@@ -2076,6 +2080,10 @@ form {
     //.with-image__title 
     &__title {
         @include text-heading-2;
+
+        @at-root .contacts-section.labeled & {
+            @include text-heading-1;
+        }
     }
     
     //.with-image__subtitle 
@@ -2367,10 +2375,17 @@ form {
     //.services__title 
     &__title {
         @include text-heading-2;
+
+        @at-root .services._services-section & {
+            @include text-heading-1;
+        }
     }
     
     //.services__subtitle 
     &__subtitle {
+        @at-root .services._services-section & {
+            margin-top: px-to-rem(10);
+        }
     }
     
     //.services-list 
@@ -2894,6 +2909,15 @@ form {
         @include viewport-tablet-min {
             max-width: 59.24%;
         }
+
+        @at-root .price._price-section & {
+            @include viewport-desktop {
+                max-width: 90.24%;
+            }
+            @include viewport-tablet {
+                max-width: 57.24%;
+            }
+        }
     }
 
     //.price__breadcrumbs 
@@ -2907,7 +2931,11 @@ form {
     
     //.price__title 
     &__title {
-        @include text-heading-2
+        @include text-heading-2;
+
+        @at-root .price._price-section & {
+            @include text-heading-1;
+        }
     }
     
     //.price__content 
@@ -3410,9 +3438,11 @@ form {
         
         //.faq-list__title 
         &__title {
+            @include text-heading-3;
+
             text-align: left;
             font-weight: 500;
-            font-size: px-to-rem(16);
+            // font-size: px-to-rem(16);
             line-height: 130%;
         }
         
@@ -5382,6 +5412,10 @@ form {
 
         > * + * {
             margin-top: 0.5em;
+
+            @at-root .contacts-section.labeled .contacts__content > * + * {
+                margin-top: px-to-rem(15);
+            }
         }
     }
     
@@ -5391,6 +5425,10 @@ form {
 
         > * + * {
             margin-left: px-to-rem(12);
+        }
+
+        @at-root .contacts-section.labeled & {
+            //align-items: center;
         }
     }
     
@@ -5433,6 +5471,16 @@ form {
             img {
                 width: 100%;
                 height: auto;
+            }
+
+            @at-root .contacts-section.labeled .contacts__messangers a {
+                @include viewport-tablet-min {
+                    flex: 0 0 px-to-rem(30);
+                }
+
+                @include viewport-phone {
+                    flex: 0 0 px-to-rem(20);
+                }
             }
         }
     }
@@ -5479,17 +5527,17 @@ form {
         
         @include viewport-desktop {
             height: calc(var(--vh, 1vh) * 65);
-            min-height: px-to-rem(600);
+            min-height: px-to-rem(472);
         }
         
         @include viewport-tablet {
             height: calc(var(--vh, 1vh) * 70);
-            min-height: px-to-rem(560);
+            min-height: px-to-rem(540);
         }
         
         @include viewport-phone {
-            height: calc(var(--vh, 1vh) * 72);
-            min-height: px-to-rem(560);
+            height: calc(var(--vh, 1vh) * 56);
+            min-height: px-to-rem(435);
         }
     }
     
