@@ -1003,25 +1003,28 @@ document.addEventListener('DOMContentLoaded', function () {
       delay: 4500,
       disableOnInteraction: false,
     },
-    loopedSlides: 5,
     loop: true,
     navigation: {
       nextEl: '.brands__slider__container .swiper-button-next',
       prevEl: '.brands__slider__container .swiper-button-prev',
     },
+    loopedSlides: 2,
     slidesPerView: 1,
     spaceBetween: 10,
 
     breakpoints: {
       768: {
+        loopedSlides: 2,
         slidesPerView: 2,
         spaceBetween: 15,
       },
       899: {
+        loopedSlides: 3,
         slidesPerView: 3,
         spaceBetween: 15,
       },
       1199: {
+        loopedSlides: 4,
         slidesPerView: 4,
         spaceBetween: 26,
       },
@@ -1042,22 +1045,22 @@ document.addEventListener('DOMContentLoaded', function () {
       prevEl: '.comments__slider__container .swiper-button-prev',
     },
     // autoHeight: true,
-    loopedSlides: 5,
+    loopedSlides: 2,
     loop: true,
     slidesPerView: 1,
     spaceBetween: 97,
 
-    breakpoints: {
-      768: {
-        spaceBetween: 97,
-      },
-      899: {
-        spaceBetween: 97,
-      },
-      1199: {
-        spaceBetween: 97,
-      },
-    },
+    // breakpoints: {
+    //   768: {
+    //     spaceBetween: 97,
+    //   },
+    //   899: {
+    //     spaceBetween: 97,
+    //   },
+    //   1199: {
+    //     spaceBetween: 97,
+    //   },
+    // },
   });
 
   let swiperGallery = new Swiper('.gallery-slider.swiper', {
@@ -1070,7 +1073,7 @@ document.addEventListener('DOMContentLoaded', function () {
       prevEl: '.gallery__slider__container .swiper-button-prev',
     },
     //autoHeight: true,
-    loopedSlides: 5,
+    loopedSlides: 2,
     loop: true,
     slidesPerView: 1,
     spaceBetween: 24,
